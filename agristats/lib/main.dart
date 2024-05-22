@@ -1,7 +1,8 @@
 import 'package:agristats/First%20Time%20user/GetStarted.dart';
+import 'package:agristats/Frontend/Splashscreen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main()async{
   runApp(const App());
 }
 
@@ -13,7 +14,7 @@ class App extends StatelessWidget{
     return const MaterialApp(
       home:Scaffold(
         backgroundColor: Colors.white,
-        body: GetStarted(),
+        body: Splashscreen(),
       )
     );
   }

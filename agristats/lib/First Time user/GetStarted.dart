@@ -1,9 +1,5 @@
-import 'dart:ui';
-
 import 'package:agristats/First%20Time%20user/Register.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class GetStarted extends StatelessWidget{
   const GetStarted({super.key});
@@ -98,11 +94,13 @@ class GetStarted extends StatelessWidget{
       ],
     );
 
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20),
-      width: double.infinity,
-      height: double.infinity,
-      child: window,
+    return Scaffold(
+      body: Container(
+        padding: const EdgeInsets.only(bottom: 20),
+        width: double.infinity,
+        height: double.infinity,
+        child: window,
+      ),
     );
   }
 }
