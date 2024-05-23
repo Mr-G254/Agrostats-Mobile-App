@@ -1,8 +1,11 @@
 import 'dart:ui';
-import 'package:agristats/Frontend/Components.dart';
+import 'package:agristats/Backend/FirebaseBackend.dart';
+import 'package:agristats/First%20Time%20user/Verify.dart';
+import 'package:agristats/Common/Components.dart';
 import 'package:agristats/Frontend/Login.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -24,6 +27,9 @@ class _RegisterState extends State<Register>{
 
   bool visible = false;
   bool emailShowError = false;
+
+  String completePhoneNumber = "";
+  bool loading  = false;
 
   void _checkIfPasswordsMatch(){
     if(confirm.text.isNotEmpty && password.text.isNotEmpty) {
@@ -56,8 +62,23 @@ class _RegisterState extends State<Register>{
     super.dispose();
   }
 
+  void getnumber(String val){
+    completePhoneNumber = val;
+  }
+
+  void verifyPhonenumber(String verId){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Verify(verificationType: "Phone", email: email.text, phoneNumber: completePhoneNumber,verificationId: verId,)));
+  }
+
+  void showError(String error){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DialogInfo(infoType: "Error", info: error)));
+  }
+
   void startRegistrationProcess(){
-    if(name.text.isEmpty || email.text.isEmpty || phone.text.isEmpty || password.text.isEmpty || confirm.text.isEmpty){
+    if(completePhoneNumber.startsWith("+254")){
+      completePhoneNumber = completePhoneNumber.substring(0,4) + completePhoneNumber.substring(5,completePhoneNumber.length);
+    }
+    if(name.text.isEmpty || phone.text.isEmpty || password.text.isEmpty || confirm.text.isEmpty){
       setState(() {
         visible = true;
       });
@@ -66,19 +87,49 @@ class _RegisterState extends State<Register>{
         visible = false;
       });
 
-      final emailIsValid = EmailValidator.validate(email.text);
+      if(email.text.isNotEmpty) {
+        final emailIsValid = EmailValidator.validate(email.text);
 
-      if(!emailIsValid){
-        setState(() {
-          emailShowError = true;
-        });
+        if (!emailIsValid) {
+          setState(() {
+            emailShowError = true;
+          });
+        } else {
+          setState(() {
+            emailShowError = false;
+          });
+
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => Verify(verificationType: "Email", email: email.text, phoneNumber: completePhoneNumber)));
+        }
+
+
       }else{
-        setState(() {
-          emailShowError = false;
-        });
+        try{
+          FirebaseBackend.verifyPhoneNumber(completePhoneNumber, showError, verifyPhonenumber);
+        }catch(e){
+          showError(e.toString());
+        }
+
+
       }
+
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => Verify(verificationType: "Phone", email: email.text, phoneNumber: completePhoneNumber)));
     }
   }
+
+  final regText = const Text(
+    "Register",
+    style: TextStyle(
+        fontSize: 20,
+        color: Colors.white,
+        fontFamily: "Times"
+    ),
+  );
+
+  final loadingAnimation = LoadingAnimationWidget.threeArchedCircle(
+      color: Colors.white,
+      size: 30
+  );
 
   @override
   Widget build(BuildContext context){
@@ -122,8 +173,8 @@ class _RegisterState extends State<Register>{
           ),
         ),
         Input(label: "NAME", editor: name, type: TextInputType.text,action: TextInputAction.next),
-        Input(label: "EMAIL", editor: email, type: TextInputType.emailAddress,action: TextInputAction.next,errorTxt: "Invalid Email",showError: emailShowError,),
-        PhoneInput(label: "PHONE NO", editor: phone, type: TextInputType.phone,action: TextInputAction.next),
+        Input(label: "EMAIL(Optional)", editor: email, type: TextInputType.emailAddress,action: TextInputAction.next,errorTxt: "Invalid Email",showError: emailShowError,),
+        PhoneInput(label: "PHONE NUMBER", editor: phone, type: TextInputType.phone,action: TextInputAction.next,phoneNumber: completePhoneNumber,callback: getnumber,),
         Input(label: "PASSWORD", editor: password, type: TextInputType.visiblePassword,action: TextInputAction.next,hideText: _isHidden),
         Input(label: "CONFIRM", editor: confirm, type: TextInputType.visiblePassword,action: TextInputAction.done,hideText: _isHidden,errorTxt: "The passwords don't match",showError: _showError,),
         Container(
@@ -158,6 +209,9 @@ class _RegisterState extends State<Register>{
           height: 75,
           child: ElevatedButton(
             onPressed: (){
+              setState(() {
+                loading = true;
+              });
               startRegistrationProcess();
             },
             style: ElevatedButton.styleFrom(
@@ -165,14 +219,7 @@ class _RegisterState extends State<Register>{
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
               backgroundColor: const Color(0xff374804),
             ),
-            child: const Text(
-              "Register",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontFamily: "Times"
-              ),
-            ),
+            child: loading? loadingAnimation : regText
           ),
         ),
         GestureDetector(

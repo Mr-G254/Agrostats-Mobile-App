@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:agristats/Frontend/Components.dart';
+import 'package:agristats/Common/Components.dart';
 import 'package:agristats/First%20Time%20user/Register.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +19,11 @@ class _LoginState extends State<Login> {
   bool _isHidden = true;
   bool _showError = false;
 
+  String completePhoneNumber = "";
+
+  void getnumber(String val){
+    completePhoneNumber = val;
+  }
 
   @override
   void dispose() {
@@ -123,9 +128,12 @@ class _LoginState extends State<Login> {
           ),
         ),
         PhoneInput(label: "PHONE NUMBER",
-            editor: phonenumber,
-            type: TextInputType.phone,
-            action: TextInputAction.done),
+          editor: phonenumber,
+          type: TextInputType.phone,
+          action: TextInputAction.done,
+          phoneNumber: completePhoneNumber,
+          callback: getnumber,
+        ),
         Container(
           padding: const EdgeInsets.only(top: 10,bottom: 15,right: 80,left: 80),
           width: double.infinity,
