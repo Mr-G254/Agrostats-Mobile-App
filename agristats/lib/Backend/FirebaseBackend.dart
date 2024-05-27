@@ -21,11 +21,11 @@ abstract class FirebaseBackend{
     await FirebaseAuth.instance.createUserWithEmailAndPassword(email: Email, password: Password);
   }
 
-  static Future<void> verifyPhoneNumber(String number,Function onErrorCallback,Function onCodeSent)async{
+  static Future<void> verifyPhoneNumber(String number,Function onCodeSent,Function onError)async{
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: number,
-        verificationCompleted: (PhoneAuthCredential credential)async{ await FirebaseBackend.signInUsingCredential(credential);},
-        verificationFailed: (FirebaseAuthException e){onErrorCallback(e);},
+        verificationCompleted: (PhoneAuthCredential credential){},
+        verificationFailed: (FirebaseAuthException e){onError();},
         codeSent: (String verificationId, int? resendToken){onCodeSent(verificationId);},
         codeAutoRetrievalTimeout: (String verificationId){}
     );
@@ -36,7 +36,39 @@ abstract class FirebaseBackend{
     return cred;
   }
 
-  static Future<void> signInUsingCredential(PhoneAuthCredential cred)async{
+  static Future<void> signInUsingPhoneCredential(PhoneAuthCredential cred)async{
     await FirebaseAuth.instance.signInWithCredential(cred);
+  }
+
+  static Future<void> registerUser(String email,String password)async{
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    // FirebaseBackend.signInWithEmailAndPassword(email, password);
+
+  }
+
+  static Future<void> signInWithEmailAndPassword(String email,String password,Function onCompletion,Function onError)async{
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) => onCompletion()).catchError(onError);
+
+  }
+
+  static Future<void> verifyEmail(Function onCodeSent)async{
+    final user = FirebaseAuth.instance.currentUser;
+
+    if(user != null) {
+      user.sendEmailVerification().then((value) => onCodeSent());
+    }
+
+  }
+
+  static Future<bool> checkIfEmailIsVerified()async{
+    final user = FirebaseAuth.instance.currentUser;
+
+    if(user != null) {
+      user.reload();
+      return user.emailVerified;
+    }else{
+      return false;
+    }
+
   }
 }

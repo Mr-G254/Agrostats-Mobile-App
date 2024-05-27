@@ -44,7 +44,7 @@ dependencies:
   intl_phone_field: ^3.2.0
   flutter_verification_code: ^1.1.7
   email_validator: ^2.1.17
-  sms_autofill: ^2.3.1
+  flutter_toggle_tab: ^1.4.1
 
 dev_dependencies:
   flutter_test:
@@ -71,7 +71,7 @@ flutter:
     - images/3d-leaf.png
     - images/bg.png
     - images/logo.png
-
+    - images/like.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

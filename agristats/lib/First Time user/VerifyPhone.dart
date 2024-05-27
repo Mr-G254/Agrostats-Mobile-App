@@ -1,23 +1,21 @@
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Common/Components.dart';
+import 'package:agristats/First%20Time%20user/VerificationComplete.dart';
 import 'package:agristats/Frontend/Homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
-class Verify extends StatefulWidget {
-  final String verificationType;
-  final String email;
+class VerifyPhone extends StatefulWidget {
   final String phoneNumber;
   final String verificationId;
-  const Verify({super.key, required this.verificationType, required this.email, required this.phoneNumber,required this.verificationId});
+  const VerifyPhone({super.key, required this.phoneNumber,required this.verificationId});
 
   @override
-  State<Verify> createState() => _VerifyState();
+  State<VerifyPhone> createState() => _VerifyState();
 }
 
-class _VerifyState extends State<Verify>{
+class _VerifyState extends State<VerifyPhone>{
   String smsOtp = "";
   bool loading = false;
 
@@ -35,28 +33,29 @@ class _VerifyState extends State<Verify>{
     ),
   );
 
+  void showErrorObj(Object){
+    showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
+    setState(() {
+      loading = false;
+    });
+  }
+
+  void verificationComplete(){
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const VerificationComplete()), (route) => false);
+  }
+
   void verify()async{
     if(smsOtp.length == 6){
-      try{
-        final cred = await FirebaseBackend.confirmPhoneNumberVerified(widget.verificationId, smsOtp);
-        await FirebaseBackend.signInUsingCredential(cred);
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Homepage()), (route) => false);
+      final cred = await FirebaseBackend.confirmPhoneNumberVerified(widget.verificationId, smsOtp).catchError(showErrorObj);
+      await FirebaseBackend.signInUsingPhoneCredential(cred).catchError(showErrorObj);
+      verificationComplete();
 
-      }catch(e){
-        Navigator.push(context, DialogRoute(context: context, builder: (context) => DialogInfo(infoType: "Error", info: e.toString())));
-      }
+
     }
-    // if(widget.verificationType == "Email"){
-    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Verify(verificationType: "Phone", email: widget.email, phoneNumber: widget.phoneNumber)));
-    // }
+
   }
 
-  Future<void> unableToVerify(String error)async{
-    await Navigator.push(context, DialogRoute(context: context, builder: (context) => DialogInfo(infoType: "Error", info: error)));
-    if(context.mounted){
-      Navigator.pop(context);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context){
@@ -67,10 +66,10 @@ class _VerifyState extends State<Verify>{
       child: Column(
         children: [
           const SizedBox(height: 50,),
-          SafeArea(
+          const SafeArea(
             child: Text(
-              "Verify your ${widget.verificationType}",
-              style: const TextStyle(
+              "Verify your Phone",
+              style: TextStyle(
                 fontFamily: "Times",
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -81,7 +80,7 @@ class _VerifyState extends State<Verify>{
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
-              "A 6-digit code has been sent to ${widget.verificationType=="Email"? widget.email: widget.phoneNumber}",
+              "A 6-digit code has been sent to ${widget.phoneNumber}",
               style: const TextStyle(
                   fontFamily: "Times",
                   fontSize: 12,
@@ -105,15 +104,17 @@ class _VerifyState extends State<Verify>{
             ),
           ),
           const SizedBox(height: 30,),
-          Container(
-            padding: const EdgeInsets.all(0),
-            child: const Text(
-              "Resend the code",
-              style: TextStyle(
-                  fontFamily: "Times",
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff239B56)
+          GestureDetector(
+            child: Container(
+              padding: const EdgeInsets.all(0),
+              child: const Text(
+                "Resend the code",
+                style: TextStyle(
+                    fontFamily: "Times",
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff239B56)
+                ),
               ),
             ),
           ),

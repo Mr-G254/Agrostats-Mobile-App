@@ -1,10 +1,17 @@
 import 'dart:ui';
 import 'package:agristats/Backend/FirebaseBackend.dart';
-import 'package:agristats/First%20Time%20user/Verify.dart';
+import 'package:agristats/First%20Time%20user/RegisterEmail.dart';
+import 'package:agristats/First%20Time%20user/RegisterPhone.dart';
+import 'package:agristats/First%20Time%20user/VerifyPhone.dart';
 import 'package:agristats/Common/Components.dart';
+import 'package:agristats/Frontend/Homepage.dart';
 import 'package:agristats/Frontend/Login.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Register extends StatefulWidget {
@@ -14,127 +21,35 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register>{
-  final name = TextEditingController();
-  final email = TextEditingController();
-  final phone = TextEditingController();
-  final password = TextEditingController();
-  final confirm = TextEditingController();
-
-  bool _isChecked = false;
-  bool _isHidden = true;
-  bool _showError = false;
-
-  bool visible = false;
-  bool emailShowError = false;
-
-  String completePhoneNumber = "";
-  bool loading  = false;
-
-  void _checkIfPasswordsMatch(){
-    if(confirm.text.isNotEmpty && password.text.isNotEmpty) {
-      setState(() {
-        if (confirm.text == password.text) {
-          _showError = false;
-        } else {
-          _showError = true;
-        }
-      });
-    }
-  }
+class _RegisterState extends State<Register> with TickerProviderStateMixin{
+  int _selectedIndex = 0;
+  late TabController _controller;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    password.addListener(_checkIfPasswordsMatch);
-    confirm.addListener(_checkIfPasswordsMatch);
+    _controller = TabController(length: 2, vsync: this);
+
+    _controller.animation?.addListener(() {
+      setState(() {
+        _selectedIndex = _controller.index;
+      });
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    name.dispose();
-    email.dispose();
-    phone.dispose();
-    password.dispose();
-    confirm.dispose();
+    _controller.dispose();
     super.dispose();
   }
-
-  void getnumber(String val){
-    completePhoneNumber = val;
-  }
-
-  void verifyPhonenumber(String verId){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Verify(verificationType: "Phone", email: email.text, phoneNumber: completePhoneNumber,verificationId: verId,)));
-  }
-
-  void showError(String error){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DialogInfo(infoType: "Error", info: error)));
-  }
-
-  void startRegistrationProcess(){
-    if(completePhoneNumber.startsWith("+254")){
-      completePhoneNumber = completePhoneNumber.substring(0,4) + completePhoneNumber.substring(5,completePhoneNumber.length);
-    }
-    if(name.text.isEmpty || phone.text.isEmpty || password.text.isEmpty || confirm.text.isEmpty){
-      setState(() {
-        visible = true;
-      });
-    }else{
-      setState(() {
-        visible = false;
-      });
-
-      if(email.text.isNotEmpty) {
-        final emailIsValid = EmailValidator.validate(email.text);
-
-        if (!emailIsValid) {
-          setState(() {
-            emailShowError = true;
-          });
-        } else {
-          setState(() {
-            emailShowError = false;
-          });
-
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => Verify(verificationType: "Email", email: email.text, phoneNumber: completePhoneNumber)));
-        }
-
-
-      }else{
-        try{
-          FirebaseBackend.verifyPhoneNumber(completePhoneNumber, showError, verifyPhonenumber);
-        }catch(e){
-          showError(e.toString());
-        }
-
-
-      }
-
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => Verify(verificationType: "Phone", email: email.text, phoneNumber: completePhoneNumber)));
-    }
-  }
-
-  final regText = const Text(
-    "Register",
-    style: TextStyle(
-        fontSize: 20,
-        color: Colors.white,
-        fontFamily: "Times"
-    ),
-  );
-
-  final loadingAnimation = LoadingAnimationWidget.threeArchedCircle(
-      color: Colors.white,
-      size: 30
-  );
 
   @override
   Widget build(BuildContext context){
 
     final column = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         const SafeArea(
           child: Text(
@@ -147,79 +62,55 @@ class _RegisterState extends State<Register>{
             ),
           )
         ),
-        Visibility(
-          visible: visible,
-          maintainSize: true,
-          maintainAnimation: true,
-          maintainState: true,
-          child: Container(
-            color: Colors.transparent,
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.error_outline_rounded,size: 20,color: Colors.red,),
-                SizedBox(width: 10,),
-                Text(
-                  "Ensure that all field are filled",
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontFamily: "Times",
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold
+        Container(
+          height: 650,
+          child: DefaultTabController(
+              length: 2,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 10,bottom: 10,left: 40,right: 40),
+                    child: const TabBar(
+                      tabs: [
+                        Tab(child: Text("Email",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),
+                        Tab(child: Text("Phone",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),
+                      ],
+                      indicatorColor: Colors.white,
+                      labelColor: Color(0xff1b424e),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-        Input(label: "NAME", editor: name, type: TextInputType.text,action: TextInputAction.next),
-        Input(label: "EMAIL(Optional)", editor: email, type: TextInputType.emailAddress,action: TextInputAction.next,errorTxt: "Invalid Email",showError: emailShowError,),
-        PhoneInput(label: "PHONE NUMBER", editor: phone, type: TextInputType.phone,action: TextInputAction.next,phoneNumber: completePhoneNumber,callback: getnumber,),
-        Input(label: "PASSWORD", editor: password, type: TextInputType.visiblePassword,action: TextInputAction.next,hideText: _isHidden),
-        Input(label: "CONFIRM", editor: confirm, type: TextInputType.visiblePassword,action: TextInputAction.done,hideText: _isHidden,errorTxt: "The passwords don't match",showError: _showError,),
-        Container(
-          padding: const EdgeInsets.only(left: 10),
-          height: 40,
-          // alignment: Alignment.centerLeft,
-          child: CheckboxListTile(
-            title: const Text(
-              "Show password",
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                  fontFamily: "Times"
-              ),
-            ),
-            value: _isChecked,
-            onChanged: (bool? val){
-              if(val != null){
-                setState(() {
-                  _isChecked = val;
-                  _isHidden = !val;
-                });
-              }
-            },
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: const Color(0xff374804),
-          )
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
-          width: double.infinity,
-          height: 75,
-          child: ElevatedButton(
-            onPressed: (){
-              setState(() {
-                loading = true;
-              });
-              startRegistrationProcess();
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 10,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-              backgroundColor: const Color(0xff374804),
-            ),
-            child: loading? loadingAnimation : regText
+                  // Container(
+                  //   padding: const EdgeInsets.only(top: 10,bottom: 0,left: 30,right: 30),
+                  //   child: FlutterToggleTab(
+                  //     labels: const ["Email","Phone"],
+                  //     selectedIndex: _selectedIndex,
+                  //     selectedLabelIndex: (int index){
+                  //       setState(() {
+                  //         _selectedIndex = index;
+                  //         _controller.animateTo(index);
+                  //       });
+                  //     },
+                  //     borderRadius: 7,
+                  //     marginSelected: const EdgeInsets.all(3),
+                  //     selectedBackgroundColors: const [Color(0xff1b424e)],
+                  //     width: 50,
+                  //     height: 40,
+                  //     selectedTextStyle: const TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),
+                  //     unSelectedTextStyle: const TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.black),
+                  //   ),
+                  // ),
+                  const Expanded(
+                    child: TabBarView(
+                      children: [
+                        RegisterEmail(),
+                        RegisterPhone()
+                      ]
+                    ),
+                  )
+
+                ],
+              )
           ),
         ),
         GestureDetector(

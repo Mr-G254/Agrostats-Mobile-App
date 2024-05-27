@@ -149,80 +149,135 @@ class PhoneInput extends StatelessWidget{
 
 }
 
-class DialogInfo extends StatelessWidget{
+// class DialogInfo extends StatelessWidget{
+//   final String infoType;
+//   final String info;
+//   const DialogInfo({super.key,required this.infoType,required this.info});
+//
+//   @override
+//   Widget build(BuildContext context){
+//     return SizedBox(
+//       width: double.infinity,
+//       height: double.infinity,
+//       child: FractionallySizedBox(
+//         heightFactor: 0.3,
+//         widthFactor: 0.9,
+//         child: Card(
+//           color: const Color(0xff1b424e),
+//           elevation: 10,
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               Container(
+//                 width: double.infinity,
+//                 padding: const EdgeInsets.only(bottom: 10,top: 10),
+//                 child: Text(
+//                   infoType,
+//                   textAlign: TextAlign.center,
+//                   style: const TextStyle(
+//                       fontSize: 25,
+//                       fontFamily: "Times",
+//                       color: Colors.white
+//                   ),
+//                 ),
+//               ),
+//               Container(
+//                 width: double.infinity,
+//                 padding: const EdgeInsets.all(10),
+//                 child: Text(
+//                   info,
+//                   textAlign: TextAlign.center,
+//                   style: const TextStyle(
+//                       fontSize: 16,
+//                       fontFamily: "Times",
+//                       color: Colors.white
+//                   ),
+//                 ),
+//               ),
+//               Container(
+//                 width: double.infinity,
+//                 height: 80,
+//                 padding: const EdgeInsets.only(right: 50,left: 50,top: 15,bottom: 20),
+//                 child: ElevatedButton(
+//                     style: ElevatedButton.styleFrom(
+//                         backgroundColor: const Color(0xff6B8D01),
+//                         elevation: 5,
+//                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+//                     ),
+//                     onPressed: (){
+//                       Navigator.pop(context);
+//                     },
+//                     child: const Text(
+//                       "Ok",
+//                       style: TextStyle(
+//                           fontFamily: "Times",
+//                           color: Colors.white,
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 20
+//                       ),
+//                     )
+//                 ),
+//               )
+//             ],
+//           ),
+//         )
+//       ),
+//     );
+//   }
+// }
+
+class DialogEr extends StatelessWidget{
   final String infoType;
   final String info;
-  const DialogInfo({super.key,required this.infoType,required this.info});
+  const DialogEr({super.key,required this.infoType,required this.info});
 
   @override
   Widget build(BuildContext context){
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: FractionallySizedBox(
-        heightFactor: 0.4,
-        widthFactor: 0.9,
-        child: Card(
-          color: const Color(0xff1b424e),
-          elevation: 10,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  infoType,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 30,
-                      fontFamily: "Times",
-                      color: Colors.white
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  info,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontFamily: "Times",
-                      color: Colors.white
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 80,
-                padding: const EdgeInsets.only(right: 50,left: 50,top: 15,bottom: 20),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff6B8D01),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-                    ),
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      "Ok",
-                      style: TextStyle(
-                          fontFamily: "Times",
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20
-                      ),
-                    )
-                ),
-              )
-            ],
-          ),
-        )
+    return AlertDialog(
+      title: Text(
+        infoType,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            fontSize: 25,
+            fontFamily: "Times",
+            color: Colors.white
+        ),
       ),
+      content: Text(
+        info,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            fontSize: 16,
+            fontFamily: "Times",
+            color: Colors.white
+        ),
+      ),
+      backgroundColor: const Color(0xff1b424e),
+      elevation: 10,
+      alignment: Alignment.center,
+      actions: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff6B8D01),
+                elevation: 5,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
+            ),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Ok",
+              style: TextStyle(
+                  fontFamily: "Times",
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18
+              ),
+            )
+        ),
+      ],
     );
   }
 }
+
