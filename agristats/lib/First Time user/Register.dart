@@ -1,18 +1,9 @@
 import 'dart:ui';
-import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/First%20Time%20user/RegisterEmail.dart';
 import 'package:agristats/First%20Time%20user/RegisterPhone.dart';
-import 'package:agristats/First%20Time%20user/VerifyPhone.dart';
-import 'package:agristats/Common/Components.dart';
-import 'package:agristats/Frontend/Homepage.dart';
 import 'package:agristats/Frontend/Login.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -22,26 +13,26 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> with TickerProviderStateMixin{
-  int _selectedIndex = 0;
-  late TabController _controller;
+  // int _selectedIndex = 0;
+  // late TabController _controller;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = TabController(length: 2, vsync: this);
-
-    _controller.animation?.addListener(() {
-      setState(() {
-        _selectedIndex = _controller.index;
-      });
-    });
+    // _controller = TabController(length: 2, vsync: this);
+    //
+    // _controller.animation?.addListener(() {
+    //   setState(() {
+    //     _selectedIndex = _controller.index;
+    //   });
+    // });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 

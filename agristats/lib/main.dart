@@ -1,4 +1,3 @@
-import 'package:agristats/First%20Time%20user/GetStarted.dart';
 import 'package:agristats/Frontend/Splashscreen.dart';
 import 'package:flutter/material.dart';
 

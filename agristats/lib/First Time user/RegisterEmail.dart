@@ -1,12 +1,9 @@
 import 'package:agristats/First%20Time%20user/VerifyEmail.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
 import '../Backend/FirebaseBackend.dart';
 import '../Common/Components.dart';
-import '../Frontend/Homepage.dart';
 
 class RegisterEmail extends StatefulWidget{
   const RegisterEmail({super.key});
@@ -40,9 +37,12 @@ class _RegisterEmailState extends State<RegisterEmail>{
     });
   }
 
-  Future<void> setUpAccountwithEmailAndPassword()async{
-    await FirebaseBackend.registerUser(email.text, password.text).catchError(showErrorObj);
+  Future<void> verifyEmail()async{
     await FirebaseBackend.verifyEmail(goToVerificationPage).catchError(showErrorObj);
+  }
+
+  Future<void> setUpAccountwithEmailAndPassword()async{
+    await FirebaseBackend.registerUser(name.text,email.text, password.text,verifyEmail,showErrorObj).catchError(showErrorObj);
 
   }
 

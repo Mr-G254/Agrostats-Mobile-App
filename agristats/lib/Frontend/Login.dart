@@ -25,7 +25,6 @@ class _LoginState extends State<Login> {
 
   bool _isChecked = false;
   bool _isHidden = true;
-  bool _showError = false;
 
   String completePhoneNumber = "";
   void showErrorObj(Object){
@@ -72,7 +71,7 @@ class _LoginState extends State<Login> {
   );
   
   void goToHomePage(){
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Homepage()), (route) => false);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Homepage()), (route) => false);
   }
 
 
@@ -91,7 +90,7 @@ class _LoginState extends State<Login> {
   }
 
   void verifyPhonenumber(String verId){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPhone(phoneNumber: completePhoneNumber,verificationId: verId,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPhone(name: "",phoneNumber: completePhoneNumber,verificationId: verId,)));
   }
 
   void loginWithPhone()async{
@@ -104,7 +103,7 @@ class _LoginState extends State<Login> {
         completePhoneNumber = completePhoneNumber.substring(0,4) + completePhoneNumber.substring(5,completePhoneNumber.length);
       }
 
-      FirebaseBackend.verifyPhoneNumber(completePhoneNumber,verifyPhonenumber,showErrorObj);
+      FirebaseBackend.verifyPhoneNumber("",completePhoneNumber,verifyPhonenumber,showErrorObj);
 
 
 

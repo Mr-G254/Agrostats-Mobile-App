@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/First%20Time%20user/VerificationComplete.dart';
-import 'package:agristats/Frontend/Homepage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
 import '../Common/Components.dart';
 
 class VerifyEmail extends StatefulWidget {
@@ -29,7 +26,7 @@ class _VerifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver{
 
   void checkIfVerifed()async{
     Timer.periodic(const Duration(seconds: 3),(val)async{
-      isVerified = await FirebaseBackend.checkIfEmailIsVerified().catchError(showErrorObj);
+      isVerified = await FirebaseBackend.checkIfEmailIsVerified(showErrorObj);
 
       if(isVerified){
         if(context.mounted){

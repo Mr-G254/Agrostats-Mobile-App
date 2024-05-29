@@ -2,14 +2,11 @@ import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/First%20Time%20user/GetStarted.dart';
 import 'package:agristats/Frontend/Homepage.dart';
 import 'package:agristats/Frontend/Login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Backend/firebase_options.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -32,7 +29,7 @@ class _Splashscreenstate extends State<Splashscreen>{
       SchedulerBinding.instance.addPostFrameCallback((timeStamp){
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => FirebaseBackend.isSignedIn? const Homepage() : const Login())
+            MaterialPageRoute(builder: (context) => FirebaseBackend.isSignedIn? Homepage() : const Login())
         );
       });
     }else{

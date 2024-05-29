@@ -1,15 +1,15 @@
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Common/Components.dart';
 import 'package:agristats/First%20Time%20user/VerificationComplete.dart';
-import 'package:agristats/Frontend/Homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class VerifyPhone extends StatefulWidget {
+  final String name;
   final String phoneNumber;
   final String verificationId;
-  const VerifyPhone({super.key, required this.phoneNumber,required this.verificationId});
+  const VerifyPhone({super.key,required this.name, required this.phoneNumber,required this.verificationId});
 
   @override
   State<VerifyPhone> createState() => _VerifyState();
@@ -41,12 +41,13 @@ class _VerifyState extends State<VerifyPhone>{
   }
 
   void verificationComplete(){
+    FirebaseBackend.addUserToDb(widget.name, "", widget.phoneNumber, (){}, showErrorObj);
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const VerificationComplete()), (route) => false);
   }
 
   void verify()async{
     if(smsOtp.length == 6){
-      final cred = await FirebaseBackend.confirmPhoneNumberVerified(widget.verificationId, smsOtp).catchError(showErrorObj);
+      final cred = await FirebaseBackend.confirmPhoneNumberVerified(widget.verificationId, smsOtp);
       await FirebaseBackend.signInUsingPhoneCredential(cred).catchError(showErrorObj);
       verificationComplete();
 

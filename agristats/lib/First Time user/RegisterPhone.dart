@@ -34,7 +34,7 @@ class _RegisterPhoneState extends State<RegisterPhone>{
   }
 
   void verifyPhonenumber(String verId){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPhone(phoneNumber: completePhoneNumber,verificationId: verId,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyPhone(name: name.text,phoneNumber: completePhoneNumber,verificationId: verId,)));
   }
 
   final regText = const Text(
@@ -62,7 +62,7 @@ class _RegisterPhoneState extends State<RegisterPhone>{
         loading = true;
       });
 
-      FirebaseBackend.verifyPhoneNumber(completePhoneNumber,verifyPhonenumber,showErrorObj);
+      FirebaseBackend.verifyPhoneNumber(name.text,completePhoneNumber,verifyPhonenumber,showErrorObj);
 
 
 
