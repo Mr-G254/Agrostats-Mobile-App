@@ -1,5 +1,6 @@
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Common/Components.dart';
+import 'package:agristats/Frontend/TakePhoto.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -72,23 +73,46 @@ class _ProfilepageState extends State<Profilepage>{
       ),
     );
 
+    final profile = Container(
+      width: 300,
+      height: 300,
+      padding: const EdgeInsets.only(top: 20,bottom: 20),
+      alignment: Alignment.center,
+      child: const CircleAvatar(
+        backgroundColor: Colors.white,
+        radius: 100,
+        child: Image(
+          image: AssetImage("images/user2.png"),
+          height: 120,
+          width: 120,
+        ),
+      ),
+    );
+
+    final camera = Container(
+      width: 280,
+      height: 280,
+      padding: const EdgeInsets.only(top: 20,bottom: 20,right: 10),
+      alignment: Alignment.bottomRight,
+      child: IconButton(
+        icon: const Icon(Icons.camera_alt_outlined,color: Colors.white,),
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const TakePhoto()));
+        },
+      ),
+    );
+
     final window = Column(
       children: [
-        Container(
-          padding: const EdgeInsets.only(top: 20,bottom: 20),
-          child: const CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 100,
-            child: Image(
-            image: AssetImage("images/user2.png"),
-            height: 120,
-            width: 120,
-            ),
-          ),
+        Stack(
+          children: [
+            profile,
+            camera
+          ],
         ),
-        Input(label: "NAME", editor: name, type: TextInputType.text, action: TextInputAction.next),
-        Input(label: "EMAIL", editor: email, type: TextInputType.emailAddress, action: TextInputAction.next),
-        Input(label: "PHONE NUMBER", editor: phone, type: TextInputType.phone, action: TextInputAction.done),
+        Input(label: "NAME", editor: name, type: TextInputType.text, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B),),
+        Input(label: "EMAIL", editor: email, type: TextInputType.emailAddress, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B),),
+        Input(label: "PHONE NUMBER", editor: phone, type: TextInputType.phone, action: TextInputAction.done,backgroundColor: const Color(0xff255A6B),),
         Container(
           padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
           width: double.infinity,
@@ -114,7 +138,7 @@ class _ProfilepageState extends State<Profilepage>{
     return Scaffold(
       appBar: appBar,
       body: Container(
-        padding: const EdgeInsets.only(right: 10,left: 10),
+        padding: const EdgeInsets.only(right: 20,left: 20),
         width: double.infinity,
         height: double.infinity,
         color: const Color(0xff1b424e),

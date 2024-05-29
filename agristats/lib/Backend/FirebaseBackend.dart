@@ -31,6 +31,10 @@ abstract class FirebaseBackend{
         verificationFailed: (FirebaseAuthException e){onError();},
         codeSent: (String verificationId, int? resendToken){
           onCodeSent(verificationId);
+
+          userName = name;
+          userPhone = number;
+          userEmail = "";
         },
         codeAutoRetrievalTimeout: (String verificationId){}
     );
@@ -47,6 +51,10 @@ abstract class FirebaseBackend{
 
   static Future<void> registerUser(String name,String email,String password,Function onCompletion,Function onError)async{
     await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password).then((value) => FirebaseBackend.addUserToDb(name, email, "", onCompletion, onError)).catchError(onError);
+
+    userName = name;
+    userEmail = email;
+    userPhone = "";
 
   }
 
@@ -107,8 +115,8 @@ abstract class FirebaseBackend{
   }
 
   static Future<String> getUserName()async{
-    userEmail = FirebaseAuth.instance.currentUser!.email!;
-    userPhone = FirebaseAuth.instance.currentUser!.phoneNumber!;
+    userEmail = FirebaseAuth.instance.currentUser!.email ?? "";
+    userPhone = FirebaseAuth.instance.currentUser!.phoneNumber ?? "";
 
    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").where("iud",isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
    final data  = snapshot.docs;
@@ -120,5 +128,12 @@ abstract class FirebaseBackend{
    }else{
      return "";
    }
+  }
+
+  static Future<void> logOut(Function onError,Function onCompletion)async{
+    await FirebaseAuth.instance.signOut().then((value) => onCompletion()).catchError(onError());
+    userName = "";
+    userEmail = "";
+    userPhone = "";
   }
 }

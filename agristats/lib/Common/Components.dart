@@ -9,7 +9,8 @@ class Input extends StatelessWidget{
   final bool hideText;
   final String errorTxt;
   final bool showError;
-  const Input({super.key,required this.label,required this.editor,required this.type,required this.action,this.hideText = false,this.errorTxt = "",this.showError = false});
+  final Color backgroundColor;
+  const Input({super.key,required this.label,required this.editor,required this.type,required this.action,this.hideText = false,this.errorTxt = "",this.showError = false,this.backgroundColor = Colors.transparent});
 
   @override
   Widget build(BuildContext context){
@@ -35,11 +36,13 @@ class Input extends StatelessWidget{
             style: TextStyle(
               height: 0.9,
               fontFamily: "Times",
-              fontSize: 20,
+              fontSize: 18,
               color: showError? Colors.red : Colors.white,
               fontWeight: FontWeight.normal
             ),
             decoration: InputDecoration(
+              filled: true,
+              fillColor: backgroundColor,
               errorText: showError? errorTxt : null,
               errorStyle: const TextStyle(
                   fontFamily: "Times",

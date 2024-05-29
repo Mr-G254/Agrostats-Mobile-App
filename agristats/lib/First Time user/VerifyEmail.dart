@@ -17,6 +17,7 @@ class VerifyEmail extends StatefulWidget {
 
 class _VerifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver{
   bool isVerified = false;
+  late final Timer timer;
 
   void showErrorObj(Object){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
@@ -25,10 +26,11 @@ class _VerifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver{
   }
 
   void checkIfVerifed()async{
-    Timer.periodic(const Duration(seconds: 3),(val)async{
+    timer = Timer.periodic(const Duration(seconds: 3),(val)async{
       isVerified = await FirebaseBackend.checkIfEmailIsVerified(showErrorObj);
 
       if(isVerified){
+        timer.cancel();
         if(context.mounted){
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:(context) => const VerificationComplete()), (route) => false);
         }
@@ -40,14 +42,13 @@ class _VerifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver{
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     checkIfVerifed();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    WidgetsBinding.instance.removeObserver(this);
+
     super.dispose();
   }
 
