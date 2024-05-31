@@ -1,7 +1,8 @@
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Common/Components.dart';
-import 'package:agristats/Frontend/TakePhoto.dart';
+import 'package:agristats/Frontend/SetPhotopage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Profilepage extends StatefulWidget{
@@ -17,6 +18,7 @@ class _ProfilepageState extends State<Profilepage>{
   final phone = TextEditingController();
   final email = TextEditingController();
   bool loading = false;
+  final picker = ImagePicker();
 
   final loadingAnimation = LoadingAnimationWidget.threeArchedCircle(
       color: Colors.white,
@@ -32,6 +34,10 @@ class _ProfilepageState extends State<Profilepage>{
     ),
   );
 
+  void goToNextPage(XFile image){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>SetPhotoPage(image: image)));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +45,7 @@ class _ProfilepageState extends State<Profilepage>{
     name.text = FirebaseBackend.userName;
     phone.text = FirebaseBackend.userPhone;
     email.text = FirebaseBackend.userEmail;
+
   }
 
   @override
@@ -74,8 +81,6 @@ class _ProfilepageState extends State<Profilepage>{
     );
 
     final profile = Container(
-      width: 300,
-      height: 300,
       padding: const EdgeInsets.only(top: 20,bottom: 20),
       alignment: Alignment.center,
       child: const CircleAvatar(
@@ -89,49 +94,67 @@ class _ProfilepageState extends State<Profilepage>{
       ),
     );
 
-    final camera = Container(
-      width: 280,
-      height: 280,
-      padding: const EdgeInsets.only(top: 20,bottom: 20,right: 10),
-      alignment: Alignment.bottomRight,
-      child: IconButton(
-        icon: const Icon(Icons.camera_alt_outlined,color: Colors.white,),
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const TakePhoto()));
-        },
+    final userPhoto = Container(
+      // width: double.infinity,
+      padding: const EdgeInsets.only(top: 20),
+      alignment: Alignment.center,
+      child: ClipOval(
+        child: Image(
+          image: NetworkImage(FirebaseBackend.profilePhotoUrl),
+          height: 250,
+          width: 250,
+          fit: BoxFit.cover,
+        )
+      ),
+    );
+
+    final images = Container(
+      padding: EdgeInsets.only(top: 10),
+      child: Card(
+        color: const Color(0xff255A6B),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 60,
+              height: 45,
+              child: IconButton(
+                  onPressed: ()async{
+                    final image = await picker.pickImage(source: ImageSource.camera);
+                    if(image != null){
+                      goToNextPage(image);
+                    }
+
+                  },
+                  icon: const Icon(Icons.camera,color: Colors.white,size: 25,)
+              ),
+            ),
+            Container(
+              width: 60,
+              height: 45,
+              child: IconButton(
+                  onPressed: ()async{
+                    final image = await picker.pickImage(source: ImageSource.gallery);
+                    if(image != null){
+                      goToNextPage(image);
+                    }
+                  },
+                  icon: const Icon(Icons.image_rounded,color: Colors.white,size: 25,)
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
     final window = Column(
       children: [
-        Stack(
-          children: [
-            profile,
-            camera
-          ],
-        ),
-        Input(label: "NAME", editor: name, type: TextInputType.text, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B),),
-        Input(label: "EMAIL", editor: email, type: TextInputType.emailAddress, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B),),
-        Input(label: "PHONE NUMBER", editor: phone, type: TextInputType.phone, action: TextInputAction.done,backgroundColor: const Color(0xff255A6B),),
-        Container(
-          padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
-          width: double.infinity,
-          height: 75,
-          child: ElevatedButton(
-            onPressed: (){
-              // setState(() {
-              //   loading = true;
-              // });
-
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 10,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-              backgroundColor: const Color(0xff6B8D01),
-            ),
-            child: loading? loadingAnimation : saveText
-          ),
-        ),
+        FirebaseBackend.profilePhotoUrl.isEmpty? profile : userPhoto,
+        images,
+        Input(label: "NAME", editor: name, type: TextInputType.text, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B),enabled: false,),
+        Input(label: "EMAIL", editor: email, type: TextInputType.emailAddress, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B),enabled: false,),
+        Input(label: "PHONE NUMBER", editor: phone, type: TextInputType.phone, action: TextInputAction.done,backgroundColor: const Color(0xff255A6B),enabled: false,),
       ],
     );
 

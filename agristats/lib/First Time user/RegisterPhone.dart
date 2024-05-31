@@ -28,9 +28,12 @@ class _RegisterPhoneState extends State<RegisterPhone>{
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: error));
   }
 
-  void showErrorObj(Object){
+  void showErrorObj(dynamic Object){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
-    Navigator.pop(context);
+    // Navigator.pop(context);
+    setState(() {
+      loading = false;
+    });
   }
 
   void verifyPhonenumber(String verId){

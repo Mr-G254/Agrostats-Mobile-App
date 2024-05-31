@@ -26,6 +26,24 @@ class _RegisterEmailState extends State<RegisterEmail>{
   bool emailShowError = false;
   bool loading  = false;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    password.addListener(_checkIfPasswordsMatch);
+    confirm.addListener(_checkIfPasswordsMatch);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    name.dispose();
+    email.dispose();
+    password.dispose();
+    confirm.dispose();
+    super.dispose();
+  }
+
   void showError(String error){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: error));
   }
@@ -126,23 +144,7 @@ class _RegisterEmailState extends State<RegisterEmail>{
       size: 30
   );
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    password.addListener(_checkIfPasswordsMatch);
-    confirm.addListener(_checkIfPasswordsMatch);
-  }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    name.dispose();
-    email.dispose();
-    password.dispose();
-    confirm.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context){

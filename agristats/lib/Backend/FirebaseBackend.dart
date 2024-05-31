@@ -1,8 +1,11 @@
 import 'dart:ffi';
+import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'firebase_options.dart';
 
 abstract class FirebaseBackend{
@@ -10,13 +13,18 @@ abstract class FirebaseBackend{
   static String userName = "";
   static String userEmail = "";
   static String userPhone = "";
+  static String profilePhotoUrl = "";
 
   static Future<void> initialize()async{
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    isSignedIn = !(FirebaseAuth.instance.currentUser == null);
+    if(FirebaseAuth.instance.currentUser != null){
+      isSignedIn = true;
+      await FirebaseBackend.getProfile();
+    }
+
   }
 
   static User? getCurrentUser(){
@@ -28,7 +36,7 @@ abstract class FirebaseBackend{
         phoneNumber: number,
         verificationCompleted: (PhoneAuthCredential credential){
         },
-        verificationFailed: (FirebaseAuthException e){onError();},
+        verificationFailed: (FirebaseAuthException e){onError(e);},
         codeSent: (String verificationId, int? resendToken){
           onCodeSent(verificationId);
 
@@ -50,16 +58,24 @@ abstract class FirebaseBackend{
   }
 
   static Future<void> registerUser(String name,String email,String password,Function onCompletion,Function onError)async{
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password).then((value) => FirebaseBackend.addUserToDb(name, email, "", onCompletion, onError)).catchError(onError);
+    bool emailexist = await FirebaseBackend.checkIfEmailExists(email);
 
-    userName = name;
-    userEmail = email;
-    userPhone = "";
+    if(emailexist){
+      onError("The email is already in use");
+    }else{
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password).then((value) => FirebaseBackend.addUserToDb(name, email, "", onCompletion, onError)).catchError(onError);
 
+      userName = name;
+      userEmail = email;
+      userPhone = "";
+    }
   }
 
   static Future<void> signInWithEmailAndPassword(String email,String password,Function onCompletion,Function onError)async{
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) => onCompletion()).catchError(onError);
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) {
+      FirebaseBackend.getProfile();
+      onCompletion();
+    }).catchError(onError);
 
   }
 
@@ -114,6 +130,17 @@ abstract class FirebaseBackend{
 
   }
 
+  static Future<bool> checkIfEmailExists(String email)async{
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").where("email",isEqualTo: email).get();
+    final data  = snapshot.docs;
+
+    if(data.isNotEmpty){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   static Future<String> getUserName()async{
     userEmail = FirebaseAuth.instance.currentUser!.email ?? "";
     userPhone = FirebaseAuth.instance.currentUser!.phoneNumber ?? "";
@@ -135,5 +162,20 @@ abstract class FirebaseBackend{
     userName = "";
     userEmail = "";
     userPhone = "";
+  }
+
+  static Future<void> uploadProfile(XFile profileImage,Function onCompletion,Function onError)async{
+    final storageRef = FirebaseStorage.instance.ref().child('profiles/${FirebaseAuth.instance.currentUser!.uid}/profile.png');
+    await storageRef.putFile(File(profileImage.path)).catchError(onError).then((value) async{
+      await FirebaseBackend.getProfile();
+      onCompletion();
+    });
+
+  }
+
+  static Future<void> getProfile()async{
+    final storageRef = FirebaseStorage.instance.ref().child('profiles/${FirebaseAuth.instance.currentUser!.uid}/profile.png');
+    profilePhotoUrl = await storageRef.getDownloadURL().catchError((e){return "";});
+
   }
 }

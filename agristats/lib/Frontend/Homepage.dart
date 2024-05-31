@@ -1,4 +1,5 @@
 import 'package:agristats/Backend/FirebaseBackend.dart';
+import 'package:agristats/Frontend/FarmDetails.dart';
 import 'package:agristats/Frontend/Login.dart';
 import 'package:agristats/Frontend/Profilepage.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,6 +93,17 @@ class _HomepageState extends State<Homepage>{
       ),
     );
 
+    final userProfile = Image(image: NetworkImage(FirebaseBackend.profilePhotoUrl),height: 30,width: 30,fit: BoxFit.cover,);
+    final noprofile = Container(
+        padding: const EdgeInsets.all(10),
+        color: Colors.white,
+        child:const Image(
+          height: 30,
+          width: 30,
+          image: AssetImage("images/user2.png"),
+        )
+    );
+
     final appBar = AppBar(
       backgroundColor: const Color(0xff255A6B),
       leadingWidth: 300,
@@ -123,29 +135,13 @@ class _HomepageState extends State<Homepage>{
         bellIcon,
         Builder(
           builder: (context) => GestureDetector(
-            // child: Container(
-            //   padding: const EdgeInsets.only(top: 10,bottom: 10,right: 10,left: 10),
-            //   child: const Image(
-            //     image: AssetImage("images/user.png"),
-            //     width: 50,
-            //     height: 50,
-            //   ),
-            // ),
             child: Container(
               padding: const EdgeInsets.all(10),
               child: AspectRatio(
                 aspectRatio: 1.1,
                 child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      color: Colors.white,
-                      child: const Image(
-                        height: 30,
-                        width: 30,
-                        image: AssetImage("images/user2.png"),
-                      ),
-                    )
+                    child: FirebaseBackend.profilePhotoUrl.isEmpty? noprofile : userProfile,
                 ),
               ),
             ),
@@ -170,15 +166,7 @@ class _HomepageState extends State<Homepage>{
                     aspectRatio: 1.1,
                     child: ClipRRect(
                         borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          color: Colors.white,
-                          child: const Image(
-                            height: 25,
-                            width: 25,
-                            image: AssetImage("images/user2.png"),
-                          ),
-                        )
+                        child: FirebaseBackend.profilePhotoUrl.isEmpty? noprofile : userProfile,
                     ),
                   )
               ),
@@ -206,9 +194,13 @@ class _HomepageState extends State<Homepage>{
                     fontFamily: "Times"
                 ),
               ),
-              onTap: (){
+              onTap: ()async{
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Profilepage()));
+                await Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Profilepage())).then((value){
+                  setState(() {
+
+                  });
+                });
               },
             ),
           ),
@@ -220,9 +212,9 @@ class _HomepageState extends State<Homepage>{
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               child:  Column(
                 children: [
-                  const ListTile(
-                    visualDensity: VisualDensity(vertical: 1),
-                    title: Text(
+                  ListTile(
+                    visualDensity: const VisualDensity(vertical: 1),
+                    title: const Text(
                       "Farm details",
                       style: TextStyle(
                           fontSize: 16,
@@ -230,6 +222,10 @@ class _HomepageState extends State<Homepage>{
                           fontFamily: "Times"
                       ),
                     ),
+                    onTap: (){
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const FarmDetails()));
+                    },
                   ),
                   Container(
                     height: 1,

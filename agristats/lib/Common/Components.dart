@@ -10,7 +10,8 @@ class Input extends StatelessWidget{
   final String errorTxt;
   final bool showError;
   final Color backgroundColor;
-  const Input({super.key,required this.label,required this.editor,required this.type,required this.action,this.hideText = false,this.errorTxt = "",this.showError = false,this.backgroundColor = Colors.transparent});
+  final bool enabled;
+  const Input({super.key,required this.label,required this.editor,required this.type,required this.action,this.hideText = false,this.errorTxt = "",this.showError = false,this.backgroundColor = Colors.transparent,this.enabled = true});
 
   @override
   Widget build(BuildContext context){
@@ -28,6 +29,7 @@ class Input extends StatelessWidget{
             ),
           ),
           TextField(
+            enabled: enabled,
             keyboardType: type,
             controller: editor,
             textInputAction: action,
@@ -49,6 +51,10 @@ class Input extends StatelessWidget{
                   fontSize: 10,
                   color: Colors.red,
                   fontWeight: FontWeight.normal
+              ),
+              disabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderSide: BorderSide(color: Colors.white,width: 2)
               ),
               focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),

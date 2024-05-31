@@ -1,4 +1,3 @@
-import 'package:agristats/Frontend/CameraFeatures.dart';
 import 'package:agristats/Frontend/Splashscreen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ void main()async{
   final firstCamera = cameras.first;
   final secondCamera = cameras.elementAt(1);
 
-  CameraFeatures.initializeCamera(cameras, firstCamera, secondCamera);
 
   runApp(const App());
 }
