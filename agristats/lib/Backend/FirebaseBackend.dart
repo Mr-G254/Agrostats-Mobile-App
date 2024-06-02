@@ -101,9 +101,10 @@ abstract class FirebaseBackend{
   }
 
   static Future<void> addUserToDb(String name,String email,String phone,Function onCompletion,Function onError)async{
-    final users = FirebaseFirestore.instance.collection('users');
+    final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid);
+    final snapshot = await userDb.get();
 
-    if (phone.isEmpty){
+    if(snapshot.docs.isEmpty){
       final user = <String,dynamic>{
         "iud" : FirebaseAuth.instance.currentUser?.uid ?? "",
         "name" : name,
@@ -111,27 +112,18 @@ abstract class FirebaseBackend{
         "phone" : phone,
       };
 
-      await users.add(user).then((value) => onCompletion()).catchError(onError);
+      await userDb.doc("User Details").set(user).then((value) async{
+        if(email.isNotEmpty){
+          await FirebaseFirestore.instance.collection("User emails").add({"email": email}).then((value) => onCompletion()).catchError(onError);
+        }
 
-    }else{
-      QuerySnapshot querySnapshot = await users.where("phone", isEqualTo: phone).get();
-
-      if(querySnapshot.docs.isEmpty){
-        final user = <String,dynamic>{
-          "iud" : FirebaseAuth.instance.currentUser?.uid ?? "",
-          "name" : name,
-          "email" : email,
-          "phone" : phone,
-        };
-
-        await users.add(user).then((value) => onCompletion()).catchError(onError);
-      }
+      }).catchError(onError);
     }
 
   }
 
   static Future<bool> checkIfEmailExists(String email)async{
-    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").where("email",isEqualTo: email).get();
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("User emails").where("email",isEqualTo: email).get();
     final data  = snapshot.docs;
 
     if(data.isNotEmpty){
@@ -145,11 +137,11 @@ abstract class FirebaseBackend{
     userEmail = FirebaseAuth.instance.currentUser!.email ?? "";
     userPhone = FirebaseAuth.instance.currentUser!.phoneNumber ?? "";
 
-   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").where("iud",isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
-   final data  = snapshot.docs;
+   DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("User Details").get();
+   final data  = snapshot.data();
 
-   if(data.isNotEmpty){
-     String? name = data[0]["name"] as String?;
+   if(snapshot.exists){
+     String? name = data?["name"] as String?;
      userName = name!;
       return name ?? "";
    }else{
@@ -178,4 +170,18 @@ abstract class FirebaseBackend{
     profilePhotoUrl = await storageRef.getDownloadURL().catchError((e){return "";});
 
   }
+
+  static Future<void> setUpFarmDetails(String size,String location,String soil,Function onCompletion,Function onError)async{
+    final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Farm Details");
+
+    final farm = <String,dynamic>{
+      "size" : size,
+      "location" : location,
+      "soil" : soil,
+    };
+
+    await userDb.set(farm).then((value) => onCompletion()).catchError(onError);
+
+  }
 }
+
