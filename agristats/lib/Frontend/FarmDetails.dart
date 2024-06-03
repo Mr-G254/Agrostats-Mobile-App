@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -23,14 +24,62 @@ class _FarmDetailsState extends State<FarmDetails>{
       size: 30
   );
 
-  final doneText = const Text(
-    "Done",
-    style: TextStyle(
+  final doneText = Text(
+    FirebaseBackend.farmIsSetUp? "Save" : "Done",
+    style: const TextStyle(
         fontSize: 20,
         color: Colors.white,
         fontFamily: "Times"
     ),
   );
+
+  void showErrorObj(Object){
+    showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
+    setState(() {
+      loading = false;
+    });
+  }
+
+  void goBack(){
+    Navigator.of(context).pop();
+  }
+
+  void setUpFarmDetails()async{
+    setState(() {
+      loading = true;
+    });
+
+    if(size.text.isNotEmpty && location.text.isNotEmpty && soil.text.isNotEmpty){
+      await FirebaseBackend.setUpFarmDetails(size.text, location.text, soil.text, goBack, showErrorObj);
+
+    }else{
+      showErrorObj("Ensure that you fill in all the fields.");
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(FirebaseBackend.farmIsSetUp){
+      final farm = FirebaseBackend.userFarm;
+      size.text = farm.getSize();
+      location.text = farm.getLocation();
+      soil.text = farm.getSoil();
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    size.dispose();
+    location.dispose();
+    soil.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -68,17 +117,20 @@ class _FarmDetailsState extends State<FarmDetails>{
                     width: double.infinity,
                     height: double.infinity,
                     alignment: Alignment.center,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                    child: Card(
+                      elevation: 10,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       child: const Image(
                         image: AssetImage("images/farm.png"),
                         width: double.infinity,
-                        fit: BoxFit.fitWidth,
+                        height: double.infinity,
+                        fit: BoxFit.fill,
                       ),
                     )
                 ),
                 Container(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(10),
                   width: double.infinity,
                   height: double.infinity,
                   alignment: Alignment.topLeft,
@@ -131,12 +183,8 @@ class _FarmDetailsState extends State<FarmDetails>{
                 width: double.infinity,
                 height: 75,
                 child: ElevatedButton(
-                    onPressed: ()async{
-                      // setState(() {
-                      //   loading = true;
-                      // });
-                      // verify();
-
+                    onPressed: (){
+                      setUpFarmDetails();
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 10,

@@ -85,6 +85,18 @@ flutter:
     - images/settings.png
     - images/reload.png
     - images/farm.png
+
+    - images/crops/bean.png
+    - images/crops/berry.png
+    - images/crops/carrot.png
+    - images/crops/coffee.png
+    - images/crops/corn.png
+    - images/crops/mango.png
+    - images/crops/orange.png
+    - images/crops/potato.png
+    - images/crops/rice.png
+    - images/crops/wheat.png
+    
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

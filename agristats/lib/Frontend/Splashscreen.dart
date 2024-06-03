@@ -25,7 +25,6 @@ class _Splashscreenstate extends State<Splashscreen>{
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     if(pref.containsKey('firstTime')){
-      // isFirstLaunch = pref.getBool('firstTime');
       SchedulerBinding.instance.addPostFrameCallback((timeStamp){
         Navigator.pushReplacement(
             context,

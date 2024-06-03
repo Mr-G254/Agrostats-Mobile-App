@@ -1,6 +1,5 @@
-import 'dart:ffi';
 import 'dart:io';
-
+import 'package:agristats/Backend/App.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +13,8 @@ abstract class FirebaseBackend{
   static String userEmail = "";
   static String userPhone = "";
   static String profilePhotoUrl = "";
+  static bool farmIsSetUp = false;
+  static late FarmDetails userFarm;
 
   static Future<void> initialize()async{
     await Firebase.initializeApp(
@@ -22,7 +23,7 @@ abstract class FirebaseBackend{
 
     if(FirebaseAuth.instance.currentUser != null){
       isSignedIn = true;
-      await FirebaseBackend.getProfile();
+      await FirebaseBackend.getAppData();
     }
 
   }
@@ -72,8 +73,9 @@ abstract class FirebaseBackend{
   }
 
   static Future<void> signInWithEmailAndPassword(String email,String password,Function onCompletion,Function onError)async{
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) {
-      FirebaseBackend.getProfile();
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) async{
+
+      await FirebaseBackend.getAppData();
       onCompletion();
     }).catchError(onError);
 
@@ -98,6 +100,15 @@ abstract class FirebaseBackend{
       return false;
     }
 
+  }
+
+  static Future<void>getAppData()async{
+    FirebaseBackend.getProfile();
+
+    farmIsSetUp = await FirebaseBackend.checkIfFarmDetails();
+    if(farmIsSetUp){
+      await FirebaseBackend.getFarmDetails();
+    }
   }
 
   static Future<void> addUserToDb(String name,String email,String phone,Function onCompletion,Function onError)async{
@@ -180,7 +191,30 @@ abstract class FirebaseBackend{
       "soil" : soil,
     };
 
+    userFarm = FarmDetails(size: size, location: location, soil: soil);
+    farmIsSetUp = true;
     await userDb.set(farm).then((value) => onCompletion()).catchError(onError);
+
+  }
+
+  static Future<bool> checkIfFarmDetails()async{
+    final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Farm Details");
+    final data = await userDb.get();
+
+    if(data.exists){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  static Future<void> getFarmDetails()async{
+    if(farmIsSetUp){
+      final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Farm Details");
+      final data = await userDb.get();
+
+      userFarm = FarmDetails(size: data['size'], location: data['location'], soil: data['soil']);
+    }
 
   }
 }

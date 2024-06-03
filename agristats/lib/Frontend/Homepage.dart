@@ -1,4 +1,5 @@
 import 'package:agristats/Backend/FirebaseBackend.dart';
+import 'package:agristats/Frontend/Crops.dart';
 import 'package:agristats/Frontend/FarmDetails.dart';
 import 'package:agristats/Frontend/Login.dart';
 import 'package:agristats/Frontend/Profilepage.dart';
@@ -154,7 +155,6 @@ class _HomepageState extends State<Homepage>{
     final menu  = Container(
       padding: const EdgeInsets.only(right: 5,left: 5,top: 5),
       child: Column(
-        // padding: const EdgeInsets.only(right: 5,left: 5),
         children: [
           SafeArea(
             child: ListTile(
@@ -222,6 +222,10 @@ class _HomepageState extends State<Homepage>{
                           fontFamily: "Times"
                       ),
                     ),
+                    trailing: Visibility(
+                      visible: !FirebaseBackend.farmIsSetUp,
+                      child: const Icon(Icons.info,color: Colors.redAccent,)
+                    ),
                     onTap: (){
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const FarmDetails()));
@@ -232,9 +236,9 @@ class _HomepageState extends State<Homepage>{
                     padding: const EdgeInsets.only(right: 10,left: 10),
                     child: const Divider(thickness: 1,),
                   ),
-                  const ListTile(
-                    visualDensity: VisualDensity(vertical: 1),
-                    title: Text(
+                  ListTile(
+                    visualDensity: const VisualDensity(vertical: 1),
+                    title: const Text(
                       "Crops",
                       style: TextStyle(
                           fontSize: 16,
@@ -242,6 +246,10 @@ class _HomepageState extends State<Homepage>{
                           fontFamily: "Times"
                       ),
                     ),
+                    onTap: (){
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Crops()));
+                    },
                   ),
                   Container(
                     height: 1,

@@ -48,9 +48,10 @@ class _VerifyState extends State<VerifyPhone>{
   void verify()async{
     if(smsOtp.length == 6){
       final cred = await FirebaseBackend.confirmPhoneNumberVerified(widget.verificationId, smsOtp);
-      await FirebaseBackend.signInUsingPhoneCredential(cred).catchError(showErrorObj);
-      verificationComplete();
-
+      await FirebaseBackend.signInUsingPhoneCredential(cred).catchError(showErrorObj).then((value) {
+        FirebaseBackend.getAppData();
+        verificationComplete();
+      });
 
     }
 

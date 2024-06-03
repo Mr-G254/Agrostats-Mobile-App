@@ -213,3 +213,25 @@ class DialogEr extends StatelessWidget{
   }
 }
 
+class IconCard extends StatelessWidget{
+  final String assetImg;
+  final Function onTapCallback;
+  const IconCard({super.key,required this.assetImg,required this.onTapCallback});
+
+  @override
+  Widget build(BuildContext context){
+    return GestureDetector(
+      onTap: onTapCallback(assetImg),
+      child: Card(
+        elevation: 10,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        color: const Color(0xff906531),
+        child: Image(
+          image: AssetImage(assetImg),
+
+        ),
+      ),
+    );
+  }
+}
