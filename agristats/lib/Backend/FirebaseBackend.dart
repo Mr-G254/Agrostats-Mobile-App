@@ -165,6 +165,7 @@ abstract class FirebaseBackend{
     userName = "";
     userEmail = "";
     userPhone = "";
+    profilePhotoUrl = "";
   }
 
   static Future<void> uploadProfile(XFile profileImage,Function onCompletion,Function onError)async{

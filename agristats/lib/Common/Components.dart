@@ -11,7 +11,8 @@ class Input extends StatelessWidget{
   final bool showError;
   final Color backgroundColor;
   final bool enabled;
-  const Input({super.key,required this.label,required this.editor,required this.type,required this.action,this.hideText = false,this.errorTxt = "",this.showError = false,this.backgroundColor = Colors.transparent,this.enabled = true});
+  final IconButton? icon;
+  const Input({super.key,required this.label,required this.editor,required this.type,required this.action,this.hideText = false,this.errorTxt = "",this.showError = false,this.backgroundColor = Colors.transparent,this.enabled = true,this.icon});
 
   @override
   Widget build(BuildContext context){
@@ -43,6 +44,7 @@ class Input extends StatelessWidget{
               fontWeight: FontWeight.normal
             ),
             decoration: InputDecoration(
+              suffixIcon: icon,
               filled: true,
               fillColor: backgroundColor,
               errorText: showError? errorTxt : null,
@@ -227,11 +229,16 @@ class IconCard extends StatelessWidget{
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: const Color(0xff906531),
-        child: Image(
-          image: AssetImage(assetImg),
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          child: Image(
+            image: AssetImage(assetImg),
 
-        ),
+          ),
+        )
       ),
     );
   }
 }
+
+
