@@ -19,7 +19,8 @@ class _RegisterEmailState extends State<RegisterEmail>{
   final confirm = TextEditingController();
 
   bool _isChecked = false;
-  bool _isHidden = true;
+  static bool _isHidden = true;
+  static bool _isHidden2 = true;
   bool _showError = false;
   bool shortPassword = false;
   bool visible = false;
@@ -144,10 +145,38 @@ class _RegisterEmailState extends State<RegisterEmail>{
       size: 30
   );
 
+  void changeVisibility(){
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
 
+  void changeVisibility2(){
+    setState(() {
+      _isHidden2 = !_isHidden2;
+    });
+  }
 
   @override
   Widget build(BuildContext context){
+    var view = IconButton(
+        onPressed: (){
+          setState(() {
+            _isHidden = !_isHidden;
+          });
+        },
+        icon: _isHidden ? const Icon(Icons.visibility_outlined,color: Colors.white,) : const Icon(Icons.visibility_off_outlined,color: Colors.white,)
+    );
+
+    var view2 = IconButton(
+        onPressed: (){
+          setState(() {
+            _isHidden2 = !_isHidden2;
+          });
+        },
+        icon: _isHidden2 ? const Icon(Icons.visibility_outlined,color: Colors.white,) : const Icon(Icons.visibility_off_outlined,color: Colors.white,)
+    );
+
     return Column(
       children: [
         Visibility(
@@ -177,34 +206,34 @@ class _RegisterEmailState extends State<RegisterEmail>{
         ),
         Input(label: "NAME", editor: name, type: TextInputType.text,action: TextInputAction.next),
         Input(label: "EMAIL", editor: email, type: TextInputType.emailAddress,action: TextInputAction.next,errorTxt: "Invalid Email",showError: emailShowError,),
-        Input(label: "PASSWORD", editor: password, type: TextInputType.visiblePassword,action: TextInputAction.next,hideText: _isHidden,errorTxt: "The password must at least have 6 characters",showError: shortPassword,),
-        Input(label: "CONFIRM", editor: confirm, type: TextInputType.visiblePassword,action: TextInputAction.done,hideText: _isHidden,errorTxt: "The passwords don't match",showError: _showError,),
-        Container(
-            padding: const EdgeInsets.only(left: 10),
-            height: 40,
-            // alignment: Alignment.centerLeft,
-            child: CheckboxListTile(
-              title: const Text(
-                "Show password",
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontFamily: "Times"
-                ),
-              ),
-              value: _isChecked,
-              onChanged: (bool? val){
-                if(val != null){
-                  setState(() {
-                    _isChecked = val;
-                    _isHidden = !val;
-                  });
-                }
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              activeColor: const Color(0xff374804),
-            )
-        ),
+        Input(label: "PASSWORD", editor: password, type: TextInputType.visiblePassword,action: TextInputAction.next,hideText: _isHidden,errorTxt: "The password must at least have 6 characters",showError: shortPassword,icon: view,),
+        Input(label: "CONFIRM", editor: confirm, type: TextInputType.visiblePassword,action: TextInputAction.done,hideText: _isHidden2,errorTxt: "The passwords don't match",showError: _showError,icon: view2,),
+        // Container(
+        //     padding: const EdgeInsets.only(left: 10),
+        //     height: 40,
+        //     // alignment: Alignment.centerLeft,
+        //     child: CheckboxListTile(
+        //       title: const Text(
+        //         "Show password",
+        //         style: TextStyle(
+        //             fontSize: 12,
+        //             color: Colors.white,
+        //             fontFamily: "Times"
+        //         ),
+        //       ),
+        //       value: _isChecked,
+        //       onChanged: (bool? val){
+        //         if(val != null){
+        //           setState(() {
+        //             _isChecked = val;
+        //             _isHidden = !val;
+        //           });
+        //         }
+        //       },
+        //       controlAffinity: ListTileControlAffinity.leading,
+        //       activeColor: const Color(0xff374804),
+        //     )
+        // ),
         Container(
           padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
           width: double.infinity,

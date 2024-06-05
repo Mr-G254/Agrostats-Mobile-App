@@ -99,7 +99,7 @@ class GetStarted extends StatelessWidget{
         padding: const EdgeInsets.only(bottom: 20),
         width: double.infinity,
         height: double.infinity,
-        child: window,
+        child: window
       ),
     );
   }

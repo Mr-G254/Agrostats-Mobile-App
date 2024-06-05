@@ -81,6 +81,10 @@ abstract class FirebaseBackend{
 
   }
 
+  static Future<void> passwordReset(String email,Function onCompletion,Function onError)async{
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) => onCompletion).catchError(onError);
+  }
+
   static Future<void> verifyEmail(Function onCodeSent)async{
     final user = FirebaseAuth.instance.currentUser;
 
@@ -216,6 +220,12 @@ abstract class FirebaseBackend{
 
       userFarm = FarmDetails(size: data['size'], location: data['location'], soil: data['soil']);
     }
+
+  }
+
+  static Future<void> addCrop(Crop crop,Function onCompletion)async{
+    final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Crop Details").collection("Crops");
+    await userDb.doc(crop.getCropName()).set(crop.toMap()).then((value) => onCompletion());
 
   }
 }

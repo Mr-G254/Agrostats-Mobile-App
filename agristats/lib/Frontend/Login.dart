@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Common/Components.dart';
 import 'package:agristats/First%20Time%20user/Register.dart';
+import 'package:agristats/Frontend/ForgotPassword.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -112,8 +113,20 @@ class _LoginState extends State<Login> {
     }
   }
 
+  void changeVisibility(){
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    var view = IconButton(
+        onPressed: () => changeVisibility(),
+        icon: _isHidden ? const Icon(Icons.visibility_outlined,color: Colors.white,) : const Icon(Icons.visibility_off_outlined,color: Colors.white,)
+    );
+
     final column = Column(
       children: [
         const SafeArea(
@@ -135,33 +148,29 @@ class _LoginState extends State<Login> {
             editor: password,
             type: TextInputType.visiblePassword,
             action: TextInputAction.done,
-            hideText: _isHidden),
-        Container(
-            padding: const EdgeInsets.only(left: 10),
+            hideText: _isHidden,
+            icon: view,
+        ),
+        GestureDetector(
+          onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForgotPassword()));
+          },
+          child: Container(
+            alignment: Alignment.topRight,
+            padding: const EdgeInsets.only(right: 30),
             height: 40,
             // alignment: Alignment.centerLeft,
-            child: CheckboxListTile(
-              title: const Text(
-                "Show password",
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontFamily: "Times"
-                ),
+            child: const Text(
+              "Forgot password?",
+              style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontFamily: "Times"
               ),
-              value: _isChecked,
-              onChanged: (bool? val) {
-                if (val != null) {
-                  setState(() {
-                    _isChecked = val;
-                    _isHidden = !val;
-                  });
-                }
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              activeColor: const Color(0xff374804),
-            )
+            ),
+          ),
         ),
+
         Container(
           padding: const EdgeInsets.only(
               top: 15, bottom: 15, right: 80, left: 80),

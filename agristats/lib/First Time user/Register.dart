@@ -54,7 +54,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin{
           )
         ),
         Container(
-          height: 650,
+          height: 600,
           child: DefaultTabController(
               length: 2,
               child: Column(
@@ -135,7 +135,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin{
         elevation: 10,
         child: FractionallySizedBox(
           widthFactor: 0.9,
-          heightFactor: 0.9,
+          heightFactor: 0.85,
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: BackdropFilter(
