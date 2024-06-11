@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:agristats/Backend/App.dart';
+import 'package:agristats/Common/Components.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'firebase_options.dart';
 
 abstract class FirebaseBackend{
@@ -16,6 +18,9 @@ abstract class FirebaseBackend{
   static bool farmIsSetUp = false;
   static late FarmDetails userFarm;
 
+  static List<Crop> crop = [];
+  static List<Widget> cropWidget = [];
+
   static Future<void> initialize()async{
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -25,7 +30,6 @@ abstract class FirebaseBackend{
       isSignedIn = true;
       await FirebaseBackend.getAppData();
     }
-
   }
 
   static User? getCurrentUser(){
@@ -112,6 +116,7 @@ abstract class FirebaseBackend{
     farmIsSetUp = await FirebaseBackend.checkIfFarmDetails();
     if(farmIsSetUp){
       await FirebaseBackend.getFarmDetails();
+      await FirebaseBackend.getAllCrops();
     }
   }
 
@@ -225,7 +230,26 @@ abstract class FirebaseBackend{
 
   static Future<void> addCrop(Crop crop,Function onCompletion)async{
     final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Crop Details").collection("Crops");
-    await userDb.doc(crop.getCropName()).set(crop.toMap()).then((value) => onCompletion());
+    await userDb.doc(crop.getCropName()).set(crop.toMap()).then((value)async{
+      await FirebaseBackend.getAllCrops();
+      onCompletion();
+    });
+
+  }
+
+  static Future<void> getAllCrops()async{
+    crop.clear();
+    cropWidget.clear();
+
+    final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Crop Details").collection("Crops");
+    final snapshot = await userDb.get();
+
+    for(final data in snapshot.docs){
+      final cropData = Crop(cropName: data['name'], plantingDate: data['plantingDate'], duration: data['duration'], landOccupied: data['landOccupied'], fertilizerAmount: data['fertilizerAmount'], fertilizerType: data['fertilizerType'], fertilizerFrequency: data['fertilizerApplicationFrequency'], herbicideAmount: data['herbicideAmount'], herbicideType: data['herbicideType'], herbicideFrequency: data['herbicideApplicationFrequency']);
+      crop.add(cropData);
+      cropWidget.add(CropCard(crop: cropData));
+
+    }
 
   }
 }

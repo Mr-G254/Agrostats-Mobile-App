@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Frontend/Crops.dart';
 import 'package:agristats/Frontend/FarmDetails.dart';
@@ -5,6 +7,9 @@ import 'package:agristats/Frontend/Login.dart';
 import 'package:agristats/Frontend/Profilepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 import '../Common/Components.dart';
 
@@ -315,8 +320,22 @@ class _HomepageState extends State<Homepage>{
                       ),
                     ),
                   ),
-
                 ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 30,),
+          Container(
+            child: const ListTile(
+              visualDensity: VisualDensity(vertical: 1),
+              tileColor: Color(0xff1b424e),
+              title: Text(
+                "Dark mode",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontFamily: "Times"
+                ),
               ),
             ),
           ),
@@ -350,7 +369,35 @@ class _HomepageState extends State<Homepage>{
       ),
     );
 
-    final window = const Column(
+    final window = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Dashboard",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontFamily: "Times"
+                ),
+              ),
+              ImageSlideshow(
+                autoPlayInterval: 3000,
+                indicatorBottomPadding: 5,
+                indicatorRadius: 4,
+                indicatorColor: const Color(0xff1b424e),
+                indicatorBackgroundColor: Colors.white,
+                isLoop: true,
+                children: FirebaseBackend.cropWidget,
+              )
+            ],
+          ),
+        )
+      ],
 
     );
 

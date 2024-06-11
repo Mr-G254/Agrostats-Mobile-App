@@ -122,7 +122,7 @@ class _FarmDetailsState extends State<FarmDetails>{
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       child: const Image(
-                        image: AssetImage("images/farm.png"),
+                        image: AssetImage("images/farrmmm.jpeg"),
                         width: double.infinity,
                         height: double.infinity,
                         fit: BoxFit.fill,

@@ -105,6 +105,7 @@ class _CropsState extends State<Crops>{
   }
 
   void showCalendar(){
+    // print(DateTime.now().year);
     showDialog(
       context: context,
       builder: (context){
@@ -114,8 +115,8 @@ class _CropsState extends State<Crops>{
               mainAxisSize: MainAxisSize.min,
               children: [
                 DatePicker(
-                  minDate: DateTime(DateTime.now().year),
-                  maxDate: DateTime(DateTime.now().year + 1),
+                  minDate: DateTime(DateTime.now().year,DateTime.now().month - 1,1),
+                  maxDate: DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day),
                   currentDateTextStyle: const TextStyle(fontFamily: "Times",color: Color(0xff6B8D01),fontSize: 22),
                   currentDateDecoration: BoxDecoration(border: Border.all(color: const Color(0xff6B8D01)),shape: BoxShape.circle),
                   selectedCellDecoration: const BoxDecoration(color: Color(0xff6B8D01),shape: BoxShape.circle),
@@ -176,8 +177,8 @@ class _CropsState extends State<Crops>{
       children: [
         Input(label: "CROP NAME", editor: cropName, type: TextInputType.text,action: TextInputAction.next),
         Input(label: "PLANTING DATE", editor: plantingDate, type: TextInputType.none,action: TextInputAction.next,icon: calendar,),
-        Input(label: "DURATION TO HARVEST(weeks)", editor: duration, type: TextInputType.text,action: TextInputAction.next),
-        Input(label: "LAND OCCUPIED(Acres)", editor: land, type: TextInputType.text,action: TextInputAction.next),
+        Input(label: "DURATION TO HARVEST(weeks)", editor: duration, type: TextInputType.number,action: TextInputAction.next),
+        Input(label: "LAND OCCUPIED(Acres)", editor: land, type: TextInputType.number,action: TextInputAction.next),
         header("FERTILIZER"),
         Row(
           children: [
@@ -185,12 +186,12 @@ class _CropsState extends State<Crops>{
               child: Input(label: "TYPE", editor: fertilizerType, type: TextInputType.text,action: TextInputAction.next),
             ),
             Expanded(
-              child: Input(label: "AMOUNT(g)", editor: fertilizerAmount, type: TextInputType.text,action: TextInputAction.next),
+              child: Input(label: "AMOUNT(g)", editor: fertilizerAmount, type: TextInputType.number,action: TextInputAction.next),
             )
 
           ],
         ),
-        Input(label: "FREQUENCY (days per week)", editor: fertilizerApplicationFrequency, type: TextInputType.visiblePassword,action: TextInputAction.next),
+        Input(label: "FREQUENCY (days per week)", editor: fertilizerApplicationFrequency, type: TextInputType.number,action: TextInputAction.next),
         header("HERBICIDE"),
         Row(
           children: [
@@ -198,12 +199,12 @@ class _CropsState extends State<Crops>{
               child: Input(label: "TYPE", editor: herbicideType, type: TextInputType.text,action: TextInputAction.next),
             ),
             Expanded(
-              child: Input(label: "AMOUNT(g)", editor: herbicideAmount, type: TextInputType.text,action: TextInputAction.next),
+              child: Input(label: "AMOUNT(g)", editor: herbicideAmount, type: TextInputType.number,action: TextInputAction.next),
             )
 
           ],
         ),
-        Input(label: "FREQUENCY (days per week)", editor: herbicideApplicationFrequency, type: TextInputType.visiblePassword,action: TextInputAction.next),
+        Input(label: "FREQUENCY (days per week)", editor: herbicideApplicationFrequency, type: TextInputType.number,action: TextInputAction.next),
         Container(
           padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
           width: double.infinity,
