@@ -24,6 +24,7 @@ class _HomepageState extends State<Homepage>{
 
   String greetings = "";
   String fullName = "";
+  bool on = true;
 
   void showErrorObj(Object){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
@@ -66,6 +67,8 @@ class _HomepageState extends State<Homepage>{
 
   @override
   Widget build(BuildContext context){
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     var bellIcon = Container(
       width: 55,
       height: 55,
@@ -89,7 +92,7 @@ class _HomepageState extends State<Homepage>{
                 "5",
                 style: TextStyle(
                     fontSize: 10,
-                    color: Colors.white,
+                    // color: Colors.white,
                     fontFamily: "Times"
                 ),
               ),
@@ -111,7 +114,7 @@ class _HomepageState extends State<Homepage>{
     );
 
     final appBar = AppBar(
-      backgroundColor: const Color(0xff255A6B),
+      // backgroundColor: const Color(0xff255A6B),
       leadingWidth: 300,
       leading: Container(
         padding: const EdgeInsets.only(left: 10),
@@ -122,15 +125,15 @@ class _HomepageState extends State<Homepage>{
               greetings,
               style: const TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  // color: Colors.white,
                   fontFamily: "Times"
               ),
             ),
-            const Text(
+            Text(
               "Welcome",
               style: TextStyle(
                   fontSize: 15,
-                  color: Colors.white60,
+                  color: isDarkMode ? Colors.white60 : Colors.black54,
                   fontFamily: "Times"
               ),
             ),
@@ -165,7 +168,7 @@ class _HomepageState extends State<Homepage>{
             child: ListTile(
               contentPadding: const EdgeInsets.only(left: 7,right: 10,top: 0,bottom: 0),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              tileColor: const Color(0xff1b424e),
+              // tileColor: const Color(0xff1b424e),
               leading: Container(
                   child: AspectRatio(
                     aspectRatio: 1.1,
@@ -177,7 +180,7 @@ class _HomepageState extends State<Homepage>{
               ),
               trailing: GestureDetector(
                 child: const Image(
-                  color: Colors.white,
+                  // color: Colors.white,
                   image: AssetImage("images/settings.png"),
                   height: 28,
                   width: 28,
@@ -187,7 +190,7 @@ class _HomepageState extends State<Homepage>{
                 fullName,
                 style: const TextStyle(
                     fontSize: 15,
-                    color: Colors.white,
+                    // color: Colors.white,
                     fontFamily: "Times"
                 ),
               ),
@@ -195,7 +198,7 @@ class _HomepageState extends State<Homepage>{
                 "Profile Settings",
                 style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white60,
+                    // color: Colors.white60,
                     fontFamily: "Times"
                 ),
               ),
@@ -213,7 +216,8 @@ class _HomepageState extends State<Homepage>{
             width: double.infinity,
             padding: const EdgeInsets.only(top: 20),
             child: Card(
-              color: const Color(0xff1b424e),
+              // color: const Color(0xff1b424e),
+              // surfaceTintColor: const Color(0xff1b424e),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               child:  Column(
                 children: [
@@ -223,7 +227,7 @@ class _HomepageState extends State<Homepage>{
                       "Farm details",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          // color: Colors.white,
                           fontFamily: "Times"
                       ),
                     ),
@@ -239,7 +243,10 @@ class _HomepageState extends State<Homepage>{
                   Container(
                     height: 1,
                     padding: const EdgeInsets.only(right: 10,left: 10),
-                    child: const Divider(thickness: 1,),
+                    child: const Divider(
+                      thickness: 1,
+                      // color: Colors.white,
+                  ),
                   ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: 1),
@@ -247,7 +254,7 @@ class _HomepageState extends State<Homepage>{
                       "Crops",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          // color: Colors.white,
                           fontFamily: "Times"
                       ),
                     ),
@@ -259,7 +266,10 @@ class _HomepageState extends State<Homepage>{
                   Container(
                     height: 1,
                     padding: const EdgeInsets.only(right: 10,left: 10),
-                    child: const Divider(thickness: 1,),
+                    child: const Divider(
+                      thickness: 1,
+                      // color: Colors.white,
+                      ),
                   ),
                   const ListTile(
                     visualDensity: VisualDensity(vertical: 1),
@@ -267,7 +277,7 @@ class _HomepageState extends State<Homepage>{
                       "Farmer's Checklist",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          // color: Colors.white,
                           fontFamily: "Times"
                       ),
                     ),
@@ -275,7 +285,10 @@ class _HomepageState extends State<Homepage>{
                   Container(
                     height: 1,
                     padding: const EdgeInsets.only(right: 10,left: 10),
-                    child: const Divider(thickness: 1,),
+                    child: const Divider(
+                      thickness: 1,
+                      // color: Colors.white,
+                  ),
                   ),
                   const ListTile(
                     visualDensity: VisualDensity(vertical: 1),
@@ -283,7 +296,7 @@ class _HomepageState extends State<Homepage>{
                       "Verification",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          // color: Colors.white,
                           fontFamily: "Times"
                       ),
                     ),
@@ -291,7 +304,10 @@ class _HomepageState extends State<Homepage>{
                   Container(
                     height: 1,
                     padding: const EdgeInsets.only(right: 10,left: 10),
-                    child: const Divider(thickness: 1,),
+                    child: const Divider(
+                      thickness: 1,
+                      // color: Colors.white,
+                  ),
                   ),
                   const ListTile(
                     visualDensity: VisualDensity(vertical: 1),
@@ -299,7 +315,7 @@ class _HomepageState extends State<Homepage>{
                       "Support",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          // color: Colors.white,
                           fontFamily: "Times"
                       ),
                     ),
@@ -307,7 +323,10 @@ class _HomepageState extends State<Homepage>{
                   Container(
                     height: 1,
                     padding: const EdgeInsets.only(right: 10,left: 10),
-                    child: const Divider(thickness: 1,),
+                    child: const Divider(
+                      thickness: 1,
+                      // color: Colors.white,
+                  ),
                   ),
                   const ListTile(
                     visualDensity: VisualDensity(vertical: 1),
@@ -315,7 +334,7 @@ class _HomepageState extends State<Homepage>{
                       "About",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          // color: Colors.white,
                           fontFamily: "Times"
                       ),
                     ),
@@ -324,19 +343,33 @@ class _HomepageState extends State<Homepage>{
               ),
             ),
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(height: 10,),
           Container(
-            child: const ListTile(
-              visualDensity: VisualDensity(vertical: 1),
-              tileColor: Color(0xff1b424e),
-              title: Text(
+            padding: const EdgeInsets.all(3),
+            child: ListTile(
+              visualDensity: const VisualDensity(vertical: 1),
+              // tileColor: const Color(0xff1b424e),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              title: const Text(
                 "Dark mode",
                 style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white,
+                    // color: Colors.white,
                     fontFamily: "Times"
                 ),
               ),
+              contentPadding: const EdgeInsets.only(right: 5,left: 10),
+              trailing: Transform.scale(
+                scale: 0.8,
+                child: Switch(
+                  value: on,
+                  onChanged: (bool value){
+                    setState(() {
+                      on = value;
+                    });
+                  },
+                ),
+              )
             ),
           ),
           Expanded(
@@ -404,14 +437,14 @@ class _HomepageState extends State<Homepage>{
     return Scaffold(
       drawer: Drawer(
         shape: const RoundedRectangleBorder(),
-        backgroundColor: const Color(0xff255A6B),
+        // backgroundColor: const Color(0xff255A6B),
         child: menu,
       ),
       appBar: appBar,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: const Color(0xff1b424e),
+        // color: const Color(0xff1b424e),
         child: window,
       ),
     );

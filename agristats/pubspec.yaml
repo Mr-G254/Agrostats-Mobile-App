@@ -89,10 +89,10 @@ flutter:
     - images/reload.png
     - images/farm.png
     - images/crop.jpg
-    - images/vann.jpg
     - images/multicrops.png
     - images/farrmmm.jpeg
     - images/farmbg.jpg
+    - images/sun.png
 
     
   # To add assets to your application, add an assets section, like this:

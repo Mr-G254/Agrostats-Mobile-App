@@ -30,7 +30,7 @@ class Input extends StatelessWidget{
             style: TextStyle(
                 fontSize: 13,
                 fontFamily: "Times",
-                color: showError? Colors.red : Colors.white
+                // color: showError? Colors.red : Colors.white
             ),
           ),
           TextField(
@@ -38,15 +38,15 @@ class Input extends StatelessWidget{
             keyboardType: type,
             controller: editor,
             textInputAction: action,
-            cursorColor: Colors.white,
+            // cursorColor: Colors.white,
             obscureText: hideText,
-            style: TextStyle(
-              height: 0.9,
-              fontFamily: "Times",
-              fontSize: 18,
-              color: showError? Colors.red : Colors.white,
-              fontWeight: FontWeight.normal
-            ),
+            // style: TextStyle(
+            //   height: 0.9,
+            //   fontFamily: "Times",
+            //   fontSize: 18,
+            //   color: showError? Colors.red : Colors.white,
+            //   fontWeight: FontWeight.normal
+            // ),
             decoration: InputDecoration(
               suffixIcon: icon,
               filled: true,
@@ -58,26 +58,35 @@ class Input extends StatelessWidget{
                   color: Colors.red,
                   fontWeight: FontWeight.normal
               ),
-              disabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.white,width: 2)
-              ),
-              focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.white,width: 2)
-              ),
-              enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.white,width: 2)
-              ),
-              errorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.red,width: 2)
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide(color: Colors.red,width: 2)
-              ),
+              // disabledBorder: const OutlineInputBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(10)),
+              //     borderSide: BorderSide(
+              //         // color: Colors.white,
+              //         width: 2
+              //     )
+              // ),
+              // focusedBorder: const OutlineInputBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(10)),
+              //     borderSide: BorderSide(
+              //         // color: Colors.white,
+              //         width: 2
+              //     )
+              // ),
+              // enabledBorder: const OutlineInputBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(10)),
+              //     borderSide: BorderSide(
+              //         // color: Colors.white,
+              //         width: 2
+              //     )
+              // ),
+              // errorBorder: const OutlineInputBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(10)),
+              //     borderSide: BorderSide(color: Colors.red,width: 2)
+              // ),
+              // focusedErrorBorder: const OutlineInputBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(10)),
+              //     borderSide: BorderSide(color: Colors.red,width: 2)
+              // ),
             ),
           )
         ],
@@ -550,4 +559,52 @@ class CropCard extends StatelessWidget{
 
 }
 
+class CropTile extends StatelessWidget{
+  final Crop crop;
+  const CropTile({super.key,required this.crop});
 
+  @override
+  Widget build(BuildContext context){
+    final card = Container(
+      width: double.infinity,
+      height: 70,
+      padding: const EdgeInsets.only(top: 2,bottom: 2),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color: const Color(0xff255A6B),
+        elevation: 5,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 20,top: 10,bottom: 10),
+              child: Text(
+                crop.cropName,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontFamily: "Times",
+                  // color: Colors.white
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+              child: Text(
+                '${crop.landOccupied}A',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontFamily: "Times",
+                  color: Colors.white60
+                ),
+              ),
+            )
+          ],
+        ),
+      )
+    );
+
+    return GestureDetector(
+      child: card,
+    );
+  }
+}

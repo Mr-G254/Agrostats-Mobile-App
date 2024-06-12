@@ -1,3 +1,124 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+abstract class MyAppThemes {
+  static final lightTheme = ThemeData(
+    primaryColor: const Color(0xffB4E1EF),
+    brightness: Brightness.light,
+    appBarTheme: const AppBarTheme(color: Color(0xff2CB0DA)),
+    scaffoldBackgroundColor: const Color(0xffE8F3F6),
+    dividerTheme: const DividerThemeData(
+      color: Colors.black
+    ),
+    drawerTheme: const DrawerThemeData(
+        backgroundColor: Color(0xff2CB0DA),
+        surfaceTintColor: Color(0xff2CB0DA),
+        elevation: 5
+    ),
+    listTileTheme: ListTileThemeData(
+        tileColor: const Color(0xffB4E1EF),
+        iconColor: Colors.black,
+        textColor: Colors.black,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+    ),
+    cardTheme: const CardTheme(
+        color: Color(0xffB4E1EF),
+        surfaceTintColor: Color(0xffB4E1EF)
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+              color: Colors.black,
+              width: 2
+          )
+      ),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+              color: Colors.black,
+              width: 2
+          )
+      ),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+              color: Colors.black,
+              width: 2
+          )
+      ),
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(color: Colors.red,width: 2)
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(color: Colors.red,width: 2)
+      ),
+    ),
+    // textTheme: TextTheme(
+    //
+    // )
+  );
+
+  static final darkTheme = ThemeData(
+    primaryColor: const Color(0xff1b424e),
+    brightness: Brightness.dark,
+    appBarTheme: const AppBarTheme(color: Color(0xff255A6B)),
+    scaffoldBackgroundColor: const Color(0xff1b424e),
+      dividerTheme: const DividerThemeData(
+          color: Colors.white
+      ),
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: Color(0xff255A6B),
+      surfaceTintColor: Color(0xff255A6B),
+      elevation: 5
+    ),
+    listTileTheme: ListTileThemeData(
+      tileColor: const Color(0xff1b424e),
+      iconColor: Colors.white,
+      textColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+    ),
+    cardTheme: const CardTheme(
+      color: Color(0xff1b424e),
+      surfaceTintColor: Color(0xff1b424e)
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+            color: Colors.white,
+              width: 2
+          )
+      ),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+            color: Colors.white,
+              width: 2
+          )
+      ),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(
+            color: Colors.white,
+              width: 2
+          )
+      ),
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(color: Colors.red,width: 2)
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(color: Colors.red,width: 2)
+      ),
+    )
+  );
+}
+
 class FarmDetails{
   final String size;
   final String location;

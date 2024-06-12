@@ -1,3 +1,4 @@
+import 'package:agristats/Backend/App.dart';
 import 'package:agristats/Frontend/Splashscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,11 @@ class App extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return const MaterialApp(
-      home:Scaffold(
+    return MaterialApp(
+      theme: MyAppThemes.lightTheme,
+      darkTheme: MyAppThemes.darkTheme,
+      themeMode: ThemeMode.system,
+      home:const Scaffold(
         backgroundColor: Colors.white,
         body: Splashscreen(),
       )

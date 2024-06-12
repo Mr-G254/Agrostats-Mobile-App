@@ -83,12 +83,14 @@ class _FarmDetailsState extends State<FarmDetails>{
 
   @override
   Widget build(BuildContext context){
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     final appBar = AppBar(
-      backgroundColor: const Color(0xff255A6B),
+      // backgroundColor: const Color(0xff255A6B),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_rounded,
-          color: Colors.white,
+          // color: Colors.white,
         ),
         onPressed: (){
           Navigator.of(context).pop();
@@ -98,7 +100,7 @@ class _FarmDetailsState extends State<FarmDetails>{
         "Farm Details",
         style: TextStyle(
             fontSize: 18,
-            color: Colors.white,
+            // color: Colors.white,
             fontFamily: "Times"
         ),
       ),
@@ -174,9 +176,9 @@ class _FarmDetailsState extends State<FarmDetails>{
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              Input(label: "SIZE(Acres)", editor: size, type: TextInputType.number, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B)),
-              Input(label: "LOCATION", editor: location, type: TextInputType.text, action: TextInputAction.next,backgroundColor: const Color(0xff255A6B)),
-              Input(label: "SOIL TYPE", editor: soil, type: TextInputType.text, action: TextInputAction.done,backgroundColor: const Color(0xff255A6B)),
+              Input(label: "SIZE(Acres)", editor: size, type: TextInputType.number, action: TextInputAction.next,backgroundColor: isDarkMode? const Color(0xff255A6B): const Color(0xff2CB0DA)),
+              Input(label: "LOCATION", editor: location, type: TextInputType.text, action: TextInputAction.next,backgroundColor: isDarkMode? const Color(0xff255A6B): const Color(0xff2CB0DA)),
+              Input(label: "SOIL TYPE", editor: soil, type: TextInputType.text, action: TextInputAction.done,backgroundColor: isDarkMode? const Color(0xff255A6B): const Color(0xff2CB0DA)),
               const SizedBox(height: 20,),
               Container(
                 padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
@@ -207,7 +209,7 @@ class _FarmDetailsState extends State<FarmDetails>{
         padding: const EdgeInsets.only(right: 0,left: 0),
         width: double.infinity,
         height: double.infinity,
-        color: const Color(0xff1b424e),
+        // color: const Color(0xff1b424e),
         child: SingleChildScrollView(
           child: window,
         ),

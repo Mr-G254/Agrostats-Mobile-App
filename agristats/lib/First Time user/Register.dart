@@ -63,6 +63,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin{
                   Container(
                     padding: const EdgeInsets.only(top: 10,bottom: 10,left: 40,right: 40),
                     child: const TabBar(
+                      dividerColor: Colors.white60,
                       tabs: [
                         Tab(child: Text("Email",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),
                         Tab(child: Text("Phone",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),

@@ -20,6 +20,7 @@ abstract class FirebaseBackend{
 
   static List<Crop> crop = [];
   static List<Widget> cropWidget = [];
+  static List<Widget> cropCards = [];
 
   static Future<void> initialize()async{
     await Firebase.initializeApp(
@@ -240,6 +241,7 @@ abstract class FirebaseBackend{
   static Future<void> getAllCrops()async{
     crop.clear();
     cropWidget.clear();
+    cropCards.clear();
 
     final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Crop Details").collection("Crops");
     final snapshot = await userDb.get();
@@ -248,7 +250,7 @@ abstract class FirebaseBackend{
       final cropData = Crop(cropName: data['name'], plantingDate: data['plantingDate'], duration: data['duration'], landOccupied: data['landOccupied'], fertilizerAmount: data['fertilizerAmount'], fertilizerType: data['fertilizerType'], fertilizerFrequency: data['fertilizerApplicationFrequency'], herbicideAmount: data['herbicideAmount'], herbicideType: data['herbicideType'], herbicideFrequency: data['herbicideApplicationFrequency']);
       crop.add(cropData);
       cropWidget.add(CropCard(crop: cropData));
-
+      cropCards.add(CropTile(crop: cropData));
     }
 
   }

@@ -55,11 +55,13 @@ class _Splashscreenstate extends State<Splashscreen>{
 
   @override
   Widget build(BuildContext context){
-    return Container(
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    final window = Container(
       padding: const EdgeInsets.all(0),
       width: double.infinity,
       height: double.infinity,
-      color: const Color(0xff1b424e),
+      // color: const Color(0xff1b424e),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +78,7 @@ class _Splashscreenstate extends State<Splashscreen>{
           const Text(
             "Effortless farming, seamless tracking",
             style: TextStyle(
-                color: Colors.white,
+                // color: Colors.white,
                 fontFamily: "Times",
                 fontSize: 15,
                 // fontWeight: FontWeight.bold
@@ -84,12 +86,16 @@ class _Splashscreenstate extends State<Splashscreen>{
           ),
           const SizedBox(height: 40,),
           LoadingAnimationWidget.fourRotatingDots(
-            color: Colors.white,
+            color: isDarkMode? Colors.white : const Color(0xff6B8D01),
             size: 40
           )
 
         ],
       ),
+    );
+
+    return Scaffold(
+      body: window,
     );
   }
 }

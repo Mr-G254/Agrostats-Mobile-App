@@ -58,7 +58,8 @@ class GetStarted extends StatelessWidget{
                 style: TextStyle(
                   fontSize: 20,
                   fontFamily: "Times",
-                  fontWeight: FontWeight.w200
+                  fontWeight: FontWeight.w200,
+                  color: Colors.black
                 ),
               ),
             ),
@@ -95,6 +96,7 @@ class GetStarted extends StatelessWidget{
     );
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.only(bottom: 20),
         width: double.infinity,
