@@ -7,6 +7,7 @@ import 'package:agristats/Frontend/Login.dart';
 import 'package:agristats/Frontend/Profilepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -25,6 +26,7 @@ class _HomepageState extends State<Homepage>{
   String greetings = "";
   String fullName = "";
   bool on = true;
+  ThemeMode _themeMode = ThemeMode.system;
 
   void showErrorObj(Object){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
@@ -65,53 +67,53 @@ class _HomepageState extends State<Homepage>{
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Login()), (route) => false);
   }
 
-  @override
-  Widget build(BuildContext context){
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    var bellIcon = Container(
-      width: 55,
-      height: 55,
-      padding: const EdgeInsets.all(10),
-      child: Stack(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: const Image(
-              image: AssetImage("images/notify.png"),
-              width: 20,
-              height: 20,
-            ),
+  var bellIcon = Container(
+    width: 55,
+    height: 55,
+    padding: const EdgeInsets.all(10),
+    child: Stack(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          child: const Image(
+            image: AssetImage("images/notify.png"),
+            width: 20,
+            height: 20,
           ),
-          Container(
-            alignment: Alignment.topRight,
-            child: const CircleAvatar(
-              radius: 8,
-              backgroundColor: Color(0xff6B8D01),
-              child: Text(
-                "5",
-                style: TextStyle(
-                    fontSize: 10,
-                    // color: Colors.white,
-                    fontFamily: "Times"
-                ),
+        ),
+        Container(
+          alignment: Alignment.topRight,
+          child: const CircleAvatar(
+            radius: 8,
+            backgroundColor: Color(0xff6B8D01),
+            child: Text(
+              "5",
+              style: TextStyle(
+                  fontSize: 10,
+                  // color: Colors.white,
+                  fontFamily: "Times"
               ),
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
-    final userProfile = Image(image: NetworkImage(FirebaseBackend.profilePhotoUrl),height: 30,width: 30,fit: BoxFit.cover,);
-    final noprofile = Container(
-        padding: const EdgeInsets.all(10),
-        color: Colors.white,
-        child:const Image(
-          height: 30,
-          width: 30,
-          image: AssetImage("images/user2.png"),
-        )
-    );
+  final userProfile = Image(image: NetworkImage(FirebaseBackend.profilePhotoUrl),height: 30,width: 30,fit: BoxFit.cover,);
+  final noprofile = Container(
+      padding: const EdgeInsets.all(10),
+      color: Colors.white,
+      child:const Image(
+        height: 30,
+        width: 30,
+        image: AssetImage("images/user2.png"),
+      )
+  );
+
+  @override
+  Widget build(BuildContext context){
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final appBar = AppBar(
       // backgroundColor: const Color(0xff255A6B),
@@ -180,7 +182,7 @@ class _HomepageState extends State<Homepage>{
               ),
               trailing: GestureDetector(
                 child: const Image(
-                  // color: Colors.white,
+                  color: Colors.white,
                   image: AssetImage("images/settings.png"),
                   height: 28,
                   width: 28,
@@ -293,7 +295,7 @@ class _HomepageState extends State<Homepage>{
                   const ListTile(
                     visualDensity: VisualDensity(vertical: 1),
                     title: Text(
-                      "Verification",
+                      "Certification",
                       style: TextStyle(
                           fontSize: 16,
                           // color: Colors.white,
@@ -364,8 +366,16 @@ class _HomepageState extends State<Homepage>{
                 child: Switch(
                   value: on,
                   onChanged: (bool value){
+                    // if(value = true){
+                    //   _themeMode = ThemeMode.dark;
+                    // }else{
+                    //   _themeMode = ThemeMode.light;
+                    // }
+
+                    on = value;
                     setState(() {
-                      on = value;
+
+
                     });
                   },
                 ),
@@ -402,6 +412,105 @@ class _HomepageState extends State<Homepage>{
       ),
     );
 
+    final weatherCard = AspectRatio(
+      aspectRatio: 2.1,
+      child: Container(
+        // padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          backgroundBlendMode: BlendMode.lighten,
+          // color: const Color(0xffadd9a6),
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xffadd9a6),
+              // Color(0xff1b424e),
+              Color(0xff255A6B),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter
+          )
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "TEMP",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                ),
+                Text(
+                  "32",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                )
+              ],
+            ),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "HUM",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                ),
+                Text(
+                  "32",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                )
+              ],
+            ),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "WIND",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                ),
+                Text(
+                  "10",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                )
+              ],
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: const Image(
+                image: AssetImage("images/sun.png"),
+                width: 100,
+                height: 100,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
     final window = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -429,7 +538,8 @@ class _HomepageState extends State<Homepage>{
               )
             ],
           ),
-        )
+        ),
+        weatherCard
       ],
 
     );

@@ -112,7 +112,8 @@ abstract class FirebaseBackend{
   }
 
   static Future<void>getAppData()async{
-    FirebaseBackend.getProfile();
+    await FirebaseBackend.getProfile();
+    await FirebaseBackend.getUserName();
 
     farmIsSetUp = await FirebaseBackend.checkIfFarmDetails();
     if(farmIsSetUp){

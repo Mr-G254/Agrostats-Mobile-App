@@ -26,6 +26,15 @@ abstract class MyAppThemes {
         color: Color(0xffB4E1EF),
         surfaceTintColor: Color(0xffB4E1EF)
     ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+          height: 0.9,
+          fontFamily: "Times",
+          fontSize: 18,
+          color: Colors.black,
+          fontWeight: FontWeight.normal
+      ),
+    ),
     inputDecorationTheme: const InputDecorationTheme(
       disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -57,9 +66,9 @@ abstract class MyAppThemes {
           borderSide: BorderSide(color: Colors.red,width: 2)
       ),
     ),
-    // textTheme: TextTheme(
-    //
-    // )
+    iconTheme: const IconThemeData(
+        color: Colors.black
+    )
   );
 
   static final darkTheme = ThemeData(
@@ -85,6 +94,15 @@ abstract class MyAppThemes {
       color: Color(0xff1b424e),
       surfaceTintColor: Color(0xff1b424e)
     ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(
+            height: 0.9,
+            fontFamily: "Times",
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.normal
+        ),
+      ),
     inputDecorationTheme: const InputDecorationTheme(
       disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -115,6 +133,9 @@ abstract class MyAppThemes {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(color: Colors.red,width: 2)
       ),
+    ),
+    iconTheme: const IconThemeData(
+      color: Colors.white
     )
   );
 }

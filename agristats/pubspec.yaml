@@ -55,6 +55,8 @@ dependencies:
   date_picker_plus: ^4.0.0
   intl: ^0.18.1
   flutter_image_slideshow: ^0.1.6
+  weather: ^3.1.1
+  geolocator: ^12.0.0
 
 dev_dependencies:
   flutter_test:
