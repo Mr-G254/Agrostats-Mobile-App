@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:agristats/Backend/App.dart';
+import 'package:agristats/Backend/WeatherAPI.dart';
 import 'package:agristats/Common/Components.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,6 +32,8 @@ abstract class FirebaseBackend{
       isSignedIn = true;
       await FirebaseBackend.getAppData();
     }
+
+    await WeatherAPI.initialize();
   }
 
   static User? getCurrentUser(){

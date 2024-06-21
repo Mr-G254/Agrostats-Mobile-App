@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:agristats/Backend/FirebaseBackend.dart';
+import 'package:agristats/Backend/WeatherAPI.dart';
 import 'package:agristats/Frontend/Crops.dart';
 import 'package:agristats/Frontend/FarmDetails.dart';
 import 'package:agristats/Frontend/Login.dart';
@@ -435,10 +436,10 @@ class _HomepageState extends State<Homepage>{
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
+                const Text(
                   "TEMP",
                   style: TextStyle(
                       fontSize: 16,
@@ -447,8 +448,8 @@ class _HomepageState extends State<Homepage>{
                   ),
                 ),
                 Text(
-                  "32",
-                  style: TextStyle(
+                  WeatherAPI.currentWeather!.temperature!.celsius as String,
+                  style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontFamily: "Times"
@@ -456,10 +457,10 @@ class _HomepageState extends State<Homepage>{
                 )
               ],
             ),
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
+                const Text(
                   "HUM",
                   style: TextStyle(
                       fontSize: 16,
@@ -468,8 +469,8 @@ class _HomepageState extends State<Homepage>{
                   ),
                 ),
                 Text(
-                  "32",
-                  style: TextStyle(
+                  WeatherAPI.currentWeather!.humidity as String,
+                  style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontFamily: "Times"
@@ -477,10 +478,10 @@ class _HomepageState extends State<Homepage>{
                 )
               ],
             ),
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
+                const Text(
                   "WIND",
                   style: TextStyle(
                       fontSize: 16,
@@ -489,8 +490,8 @@ class _HomepageState extends State<Homepage>{
                   ),
                 ),
                 Text(
-                  "10",
-                  style: TextStyle(
+                  WeatherAPI.currentWeather!.windSpeed as String,
+                  style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                       fontFamily: "Times"
