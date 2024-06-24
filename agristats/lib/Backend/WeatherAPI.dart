@@ -9,6 +9,7 @@ class WeatherAPI{
 
   static Future<void> initialize()async{
     serviceIsEnabled = await Geolocator.isLocationServiceEnabled();
+    await Geolocator.requestPermission();
 
     if(!serviceIsEnabled){
       Future.error("Ensure your location is enabled");
