@@ -416,7 +416,7 @@ class _HomepageState extends State<Homepage>{
     final weatherCard = AspectRatio(
       aspectRatio: 2.1,
       child: Container(
-        // padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -440,7 +440,8 @@ class _HomepageState extends State<Homepage>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text(
-                  "TEMP",
+                  "TEMP\n(C)",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -461,7 +462,8 @@ class _HomepageState extends State<Homepage>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text(
-                  "HUM",
+                  "HUM\n(%)",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -482,7 +484,8 @@ class _HomepageState extends State<Homepage>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text(
-                  "WIND",
+                  "WIND\n(m/s)",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -540,7 +543,18 @@ class _HomepageState extends State<Homepage>{
             ],
           ),
         ),
-        weatherCard
+        weatherCard,
+        Container(
+          padding: const EdgeInsets.only(left: 10,top: 20),
+          child: const Text(
+            "Notifications",
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: "Times"
+            ),
+          ),
+        )
       ],
 
     );
