@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Backend/WeatherAPI.dart';
+import 'package:agristats/Frontend/About.dart';
 import 'package:agristats/Frontend/Crops.dart';
 import 'package:agristats/Frontend/FarmDetails.dart';
 import 'package:agristats/Frontend/Login.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 import '../Common/Components.dart';
+import 'Support.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -274,25 +276,25 @@ class _HomepageState extends State<Homepage>{
                       // color: Colors.white,
                       ),
                   ),
-                  const ListTile(
-                    visualDensity: VisualDensity(vertical: 1),
-                    title: Text(
-                      "Farmer's Checklist",
-                      style: TextStyle(
-                          fontSize: 16,
-                          // color: Colors.white,
-                          fontFamily: "Times"
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 1,
-                    padding: const EdgeInsets.only(right: 10,left: 10),
-                    child: const Divider(
-                      thickness: 1,
-                      // color: Colors.white,
-                  ),
-                  ),
+                  // const ListTile(
+                  //   visualDensity: VisualDensity(vertical: 1),
+                  //   title: Text(
+                  //     "Farmer's Checklist",
+                  //     style: TextStyle(
+                  //         fontSize: 16,
+                  //         // color: Colors.white,
+                  //         fontFamily: "Times"
+                  //     ),
+                  //   ),
+                  // ),
+                  // Container(
+                  //   height: 1,
+                  //   padding: const EdgeInsets.only(right: 10,left: 10),
+                  //   child: const Divider(
+                  //     thickness: 1,
+                  //     // color: Colors.white,
+                  // ),
+                  // ),
                   const ListTile(
                     visualDensity: VisualDensity(vertical: 1),
                     title: Text(
@@ -312,9 +314,9 @@ class _HomepageState extends State<Homepage>{
                       // color: Colors.white,
                   ),
                   ),
-                  const ListTile(
-                    visualDensity: VisualDensity(vertical: 1),
-                    title: Text(
+                  ListTile(
+                    visualDensity: const VisualDensity(vertical: 1),
+                    title: const Text(
                       "Support",
                       style: TextStyle(
                           fontSize: 16,
@@ -322,6 +324,10 @@ class _HomepageState extends State<Homepage>{
                           fontFamily: "Times"
                       ),
                     ),
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Support()));
+
+                    },
                   ),
                   Container(
                     height: 1,
@@ -331,9 +337,9 @@ class _HomepageState extends State<Homepage>{
                       // color: Colors.white,
                   ),
                   ),
-                  const ListTile(
-                    visualDensity: VisualDensity(vertical: 1),
-                    title: Text(
+                  ListTile(
+                    visualDensity: const VisualDensity(vertical: 1),
+                    title: const Text(
                       "About",
                       style: TextStyle(
                           fontSize: 16,
@@ -341,6 +347,11 @@ class _HomepageState extends State<Homepage>{
                           fontFamily: "Times"
                       ),
                     ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => AboutUsPage()));
+                    }
+
                   ),
                 ],
               ),
