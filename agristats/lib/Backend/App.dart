@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:external_path/external_path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -176,10 +179,12 @@ class Crop{
   final String fertilizerType;
   final String fertilizerAmount;
   final String fertilizerFrequency;
+  final List<String> fertilizerApplicationDates;
   final String herbicideType;
   final String herbicideAmount;
   final String herbicideFrequency;
-  const Crop({required this.cropName,required this.plantingDate,required this.duration,required this.landOccupied,required this.fertilizerAmount,required this.fertilizerType,required this.fertilizerFrequency,required this.herbicideAmount,required this.herbicideType,required this.herbicideFrequency});
+  final List<String> herbicideApplicationDates;
+  const Crop({required this.cropName,required this.plantingDate,required this.duration,required this.landOccupied,required this.fertilizerAmount,required this.fertilizerType,required this.fertilizerFrequency,required this.herbicideAmount,required this.herbicideType,required this.herbicideFrequency,required this.fertilizerApplicationDates,required this.herbicideApplicationDates});
 
   String getCropName(){
     return cropName;
@@ -221,6 +226,14 @@ class Crop{
     return herbicideFrequency;
   }
 
+  List<String> getFertilizerApplicationDates(){
+    return fertilizerApplicationDates;
+  }
+
+  List<String> getHerbicideApplicationDates(){
+    return herbicideApplicationDates;
+  }
+
   Map<String, dynamic> toMap(){
     return {
       "name" : cropName,
@@ -236,7 +249,7 @@ class Crop{
     };
   }
 
-  void generatePdfReport() async {
+  Future<void> generatePdfReport() async {
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
@@ -244,24 +257,32 @@ class Crop{
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text('Farmer Report', style: pw.TextStyle(
-                  fontSize: 24, fontWeight: pw.FontWeight.bold)),
+              pw.Container(
+                alignment: pw.Alignment.center,
+                width: double.infinity,
+                padding: const pw.EdgeInsets.all(0),
+                child: pw.Text('Farmer Report', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold))
+              ),
+              pw.Divider(thickness: 2,indent: 20,endIndent: 20),
               pw.SizedBox(height: 20),
-              pw.Text('Crop             : $cropName'),
-              pw.Text('Planting Date    : $plantingDate'),
-              pw.Text('Planting Duration: $duration weeks'),
-              pw.Text('Area Occupied    : $landOccupied Acres'),
-              pw.Text('Planting Duration: $duration weeks'),
-              pw.Text('Fertilizer Type  : $fertilizerType'),
-              pw.Text('Fertilizer Amount: $fertilizerAmount'),
-              pw.Text('Fertilizer Application: $fertilizerFrequency'),
-              pw.Text('Herbicide Type    : $herbicideAmount'),
-              pw.Text('Herbicide Amount  : $herbicideAmount'),
-              pw.Text('Herbicide Application: $herbicideFrequency'),
+              pw.Text('Crop             : $cropName',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Planting Date    : $plantingDate',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Planting Duration: $duration weeks',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Area Occupied    : $landOccupied Acres',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Planting Duration: $duration weeks',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Fertilizer Type  : $fertilizerType',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Fertilizer Amount: $fertilizerAmount',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Fertilizer Application: $fertilizerFrequency',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Herbicide Type    : $herbicideAmount',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Herbicide Amount  : $herbicideAmount',style: const pw.TextStyle(fontSize: 18)),
+              pw.Text('Herbicide Application: $herbicideFrequency',style: const pw.TextStyle(fontSize: 18)),
             ],
           );
         },
       ),
     );
+
+    final file = File("${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/$cropName-$plantingDate.pdf");
+    await file.writeAsBytes(await pdf.save());
   }
 }

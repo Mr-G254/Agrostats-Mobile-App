@@ -251,7 +251,7 @@ abstract class FirebaseBackend{
     final snapshot = await userDb.get();
 
     for(final data in snapshot.docs){
-      final cropData = Crop(cropName: data['name'], plantingDate: data['plantingDate'], duration: data['duration'], landOccupied: data['landOccupied'], fertilizerAmount: data['fertilizerAmount'], fertilizerType: data['fertilizerType'], fertilizerFrequency: data['fertilizerApplicationFrequency'], herbicideAmount: data['herbicideAmount'], herbicideType: data['herbicideType'], herbicideFrequency: data['herbicideApplicationFrequency']);
+      final cropData = Crop(cropName: data['name'], plantingDate: data['plantingDate'], duration: data['duration'], landOccupied: data['landOccupied'], fertilizerAmount: data['fertilizerAmount'], fertilizerType: data['fertilizerType'], fertilizerFrequency: data['fertilizerApplicationFrequency'], herbicideAmount: data['herbicideAmount'], herbicideType: data['herbicideType'], herbicideFrequency: data['herbicideApplicationFrequency'],fertilizerApplicationDates: data['fertilizerApplicationDates'],herbicideApplicationDates: data['herbicideApplicationDates']);
       crop.add(cropData);
       cropWidget.add(CropCard(crop: cropData));
       cropCards.add(CropTile(crop: cropData));

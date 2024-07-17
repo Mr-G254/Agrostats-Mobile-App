@@ -64,17 +64,39 @@ class _AddCropState extends State<AddCrop>{
     ),
   );
 
+  final saveToPDF = const Text(
+    "Save to PDF",
+    style: TextStyle(
+        fontSize: 20,
+        color: Colors.white,
+        fontFamily: "Times"
+    ),
+  );
+
   final loadingAnimation = LoadingAnimationWidget.threeArchedCircle(
       color: Colors.white,
       size: 30
   );
 
+  List<String> generateDates(int weekInterval,int totalDuration){
+    List<String> dates = [];
+
+    DateTime current = DateTime.now();
+    while(current.isBefore(DateTime.now().add(Duration(days: totalDuration*7)))){
+      current = current.add(Duration(days: weekInterval*7));
+      dates.add(DateFormat('dd-MM-yyyy').format(current).toString());
+    }
+
+    return dates;
+  }
+
   void uploadCropDetails(){
     setState(() {
       loading = true;
     });
+
     if(cropName.text.isNotEmpty && plantingDate.text.isNotEmpty && duration.text.isNotEmpty && land.text.isNotEmpty && fertilizerType.text.isNotEmpty && fertilizerAmount.text.isNotEmpty && fertilizerApplicationFrequency.text.isNotEmpty && herbicideType.text.isNotEmpty && herbicideAmount.text.isNotEmpty && herbicideApplicationFrequency.text.isNotEmpty){
-      final crop = Crop(cropName: cropName.text, plantingDate: plantingDate.text, duration: duration.text, landOccupied: land.text, fertilizerAmount: fertilizerAmount.text, fertilizerType: fertilizerType.text, fertilizerFrequency: fertilizerApplicationFrequency.text, herbicideAmount: herbicideAmount.text, herbicideType: herbicideType.text, herbicideFrequency: herbicideApplicationFrequency.text);
+      final crop = Crop(cropName: cropName.text, plantingDate: plantingDate.text, duration: duration.text, landOccupied: land.text, fertilizerAmount: fertilizerAmount.text, fertilizerType: fertilizerType.text, fertilizerFrequency: fertilizerApplicationFrequency.text, herbicideAmount: herbicideAmount.text, herbicideType: herbicideType.text, herbicideFrequency: herbicideApplicationFrequency.text,herbicideApplicationDates: generateDates(herbicideApplicationFrequency.text as int, duration.text as int),fertilizerApplicationDates: generateDates(fertilizerApplicationFrequency.text as int, duration.text as int));
       FirebaseBackend.addCrop(crop, (){
         setState(() {
           loading = false;
@@ -166,6 +188,17 @@ class _AddCropState extends State<AddCrop>{
     );
   }
 
+  void convertToPDF()async{
+    setState(() {
+      loading = true;
+    });
+
+    await widget.crop!.generatePdfReport().then((val){
+      setState(() {
+        loading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -175,14 +208,14 @@ class _AddCropState extends State<AddCrop>{
       height: 75,
       child: ElevatedButton(
           onPressed: (){
-            uploadCropDetails();
+            widget.crop==null ? uploadCropDetails() : convertToPDF();
           },
           style: ElevatedButton.styleFrom(
             elevation: 10,
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             backgroundColor: const Color(0xff6B8D01),
           ),
-          child: loading ? loadingAnimation : saveText
+          child: loading ? loadingAnimation : widget.crop!=null ? saveToPDF : saveText
       ),
     );
 
@@ -249,7 +282,8 @@ class _AddCropState extends State<AddCrop>{
           ],
         ),
         Input(label: "FREQUENCY (days per week)", editor: herbicideApplicationFrequency, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
-        widget.crop == null ? button : const SizedBox(height: 10,),
+        button
+        // widget.crop == null ? button : const SizedBox(height: 10,),
       ],
     );
 
