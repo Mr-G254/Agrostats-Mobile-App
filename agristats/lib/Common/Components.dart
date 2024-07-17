@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:agristats/Backend/App.dart';
+import 'package:agristats/Frontend/AddCrop.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -262,7 +263,7 @@ class CropCard extends StatelessWidget{
   Widget build(BuildContext context){
     final remwks = ((int.parse(crop.duration)*7) - DateTime.now().difference(DateFormat("dd-MM-yyyy").parse(crop.plantingDate)).inDays)/7;
     
-    return Container(
+    final card = Container(
       padding: const EdgeInsets.all(0),
       width: double .infinity,
       height: MediaQuery.of(context).size.height/4,
@@ -555,6 +556,13 @@ class CropCard extends StatelessWidget{
         ),
       ),
     );
+
+    return GestureDetector(
+      child: card,
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddCrop(crop: crop,)));
+      },
+    );
   }
 
 }
@@ -569,37 +577,42 @@ class CropTile extends StatelessWidget{
       width: double.infinity,
       height: 70,
       padding: const EdgeInsets.only(top: 2,bottom: 2),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        color: const Color(0xff255A6B),
-        elevation: 5,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(left: 20,top: 10,bottom: 10),
-              child: Text(
-                crop.cropName,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontFamily: "Times",
-                  // color: Colors.white
+      child: GestureDetector(
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: const Color(0xff255A6B),
+          elevation: 5,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 20,top: 10,bottom: 10),
+                child: Text(
+                  crop.cropName,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontFamily: "Times",
+                    // color: Colors.white
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(right: 10),
-              child: Text(
-                '${crop.landOccupied}A',
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily: "Times",
-                  color: Colors.white60
+              Container(
+                padding: const EdgeInsets.only(right: 10),
+                child: Text(
+                  '${crop.landOccupied}A',
+                  style: const TextStyle(
+                      fontSize: 15,
+                      fontFamily: "Times",
+                      color: Colors.white60
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddCrop(crop: crop,)));
+        },
       )
     );
 

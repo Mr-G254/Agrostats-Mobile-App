@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 abstract class MyAppThemes {
   static final lightTheme = ThemeData(
@@ -233,5 +234,34 @@ class Crop{
       "herbicideAmount" : herbicideAmount,
       "herbicideApplicationFrequency" : herbicideFrequency
     };
+  }
+
+  void generatePdfReport() async {
+    final pdf = pw.Document();
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text('Farmer Report', style: pw.TextStyle(
+                  fontSize: 24, fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 20),
+              pw.Text('Crop             : $cropName'),
+              pw.Text('Planting Date    : $plantingDate'),
+              pw.Text('Planting Duration: $duration weeks'),
+              pw.Text('Area Occupied    : $landOccupied Acres'),
+              pw.Text('Planting Duration: $duration weeks'),
+              pw.Text('Fertilizer Type  : $fertilizerType'),
+              pw.Text('Fertilizer Amount: $fertilizerAmount'),
+              pw.Text('Fertilizer Application: $fertilizerFrequency'),
+              pw.Text('Herbicide Type    : $herbicideAmount'),
+              pw.Text('Herbicide Amount  : $herbicideAmount'),
+              pw.Text('Herbicide Application: $herbicideFrequency'),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddCrop extends StatefulWidget{
-  const AddCrop({super.key});
+  final Crop? crop;
+  const AddCrop({super.key,this.crop});
 
   @override
   State<AddCrop> createState() => _AddCropState();
@@ -26,6 +27,26 @@ class _AddCropState extends State<AddCrop>{
   final herbicideApplicationFrequency = TextEditingController();
 
   bool loading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if(widget.crop !=null){
+      final currentCrop = widget.crop;
+      cropName.text = currentCrop!.cropName;
+      plantingDate.text = currentCrop.plantingDate;
+      duration.text = currentCrop.duration;
+      land.text = currentCrop.landOccupied;
+      fertilizerType.text = currentCrop.fertilizerType;
+      fertilizerAmount.text = currentCrop.fertilizerAmount;
+      fertilizerApplicationFrequency.text = currentCrop.fertilizerFrequency;
+      herbicideType.text = currentCrop.herbicideType;
+      herbicideAmount.text = currentCrop.herbicideAmount;
+      herbicideApplicationFrequency.text = currentCrop.herbicideFrequency;
+    }
+  }
 
   void showErrorObj(Object){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
@@ -148,6 +169,23 @@ class _AddCropState extends State<AddCrop>{
 
   @override
   Widget build(BuildContext context){
+    final button = Container(
+      padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
+      width: double.infinity,
+      height: 75,
+      child: ElevatedButton(
+          onPressed: (){
+            uploadCropDetails();
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 10,
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+            backgroundColor: const Color(0xff6B8D01),
+          ),
+          child: loading ? loadingAnimation : saveText
+      ),
+    );
+
     final calendar = IconButton(
         onPressed: ()async{
           showCalendar();
@@ -169,9 +207,9 @@ class _AddCropState extends State<AddCrop>{
           Navigator.of(context).pop();
         },
       ),
-      title: const Text(
-        "Add a crop",
-        style: TextStyle(
+      title: Text(
+        widget.crop == null ?"Add a crop" : "Crop report",
+        style: const TextStyle(
             fontSize: 18,
             // color: Colors.white,
             fontFamily: "Times"
@@ -181,54 +219,37 @@ class _AddCropState extends State<AddCrop>{
 
     final inputFields = Column(
       children: [
-        Input(label: "CROP NAME", editor: cropName, type: TextInputType.text,action: TextInputAction.next),
-        Input(label: "PLANTING DATE", editor: plantingDate, type: TextInputType.none,action: TextInputAction.next,icon: calendar,),
-        Input(label: "DURATION TO HARVEST(weeks)", editor: duration, type: TextInputType.number,action: TextInputAction.next),
-        Input(label: "LAND OCCUPIED(Acres)", editor: land, type: TextInputType.number,action: TextInputAction.next),
+        Input(label: "CROP NAME", editor: cropName, type: TextInputType.text,action: TextInputAction.next,enabled: widget.crop==null,),
+        Input(label: "PLANTING DATE", editor: plantingDate, type: TextInputType.none,action: TextInputAction.next,icon: calendar,enabled: widget.crop==null,),
+        Input(label: "DURATION TO HARVEST(weeks)", editor: duration, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
+        Input(label: "LAND OCCUPIED(Acres)", editor: land, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
         header("FERTILIZER"),
         Row(
           children: [
             Expanded(
-              child: Input(label: "TYPE", editor: fertilizerType, type: TextInputType.text,action: TextInputAction.next),
+              child: Input(label: "TYPE", editor: fertilizerType, type: TextInputType.text,action: TextInputAction.next,enabled: widget.crop==null,),
             ),
             Expanded(
-              child: Input(label: "AMOUNT(g)", editor: fertilizerAmount, type: TextInputType.number,action: TextInputAction.next),
+              child: Input(label: "AMOUNT(g)", editor: fertilizerAmount, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
             )
 
           ],
         ),
-        Input(label: "FREQUENCY (days per week)", editor: fertilizerApplicationFrequency, type: TextInputType.number,action: TextInputAction.next),
+        Input(label: "FREQUENCY (days per week)", editor: fertilizerApplicationFrequency, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
         header("HERBICIDE"),
         Row(
           children: [
             Expanded(
-              child: Input(label: "TYPE", editor: herbicideType, type: TextInputType.text,action: TextInputAction.next),
+              child: Input(label: "TYPE", editor: herbicideType, type: TextInputType.text,action: TextInputAction.next,enabled: widget.crop==null,),
             ),
             Expanded(
-              child: Input(label: "AMOUNT(g)", editor: herbicideAmount, type: TextInputType.number,action: TextInputAction.next),
+              child: Input(label: "AMOUNT(g)", editor: herbicideAmount, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
             )
 
           ],
         ),
-        Input(label: "FREQUENCY (days per week)", editor: herbicideApplicationFrequency, type: TextInputType.number,action: TextInputAction.next),
-        Container(
-          padding: const EdgeInsets.only(top: 15,bottom: 15,right: 80,left: 80),
-          width: double.infinity,
-          height: 75,
-          child: ElevatedButton(
-              onPressed: (){
-                uploadCropDetails();
-              },
-              style: ElevatedButton.styleFrom(
-                elevation: 10,
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                backgroundColor: const Color(0xff6B8D01),
-              ),
-              child: loading ? loadingAnimation : saveText
-          ),
-        ),
-
-
+        Input(label: "FREQUENCY (days per week)", editor: herbicideApplicationFrequency, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
+        widget.crop == null ? button : const SizedBox(height: 10,),
       ],
     );
 
