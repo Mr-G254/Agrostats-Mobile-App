@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
@@ -86,12 +87,12 @@ class _HomepageState extends State<Homepage>{
         ),
         Container(
           alignment: Alignment.topRight,
-          child: const CircleAvatar(
+          child: CircleAvatar(
             radius: 8,
-            backgroundColor: Color(0xff6B8D01),
+            backgroundColor: const Color(0xff6B8D01),
             child: Text(
-              "5",
-              style: TextStyle(
+              FirebaseBackend.notificationWidgets.length.toString(),
+              style: const TextStyle(
                   fontSize: 10,
                   // color: Colors.white,
                   fontFamily: "Times"
@@ -146,7 +147,6 @@ class _HomepageState extends State<Homepage>{
         )
       ),
       actions: [
-        bellIcon,
         Builder(
           builder: (context) => GestureDetector(
             child: Container(
@@ -251,7 +251,7 @@ class _HomepageState extends State<Homepage>{
                     child: const Divider(
                       thickness: 1,
                       // color: Colors.white,
-                  ),
+                    ),
                   ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: 1),
@@ -263,9 +263,13 @@ class _HomepageState extends State<Homepage>{
                           fontFamily: "Times"
                       ),
                     ),
-                    onTap: (){
+                    onTap: ()async{
                       Navigator.of(context).pop();
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Crops()));
+                      await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const Crops())).then((val){
+                        setState(() {
+
+                        });
+                      });
                     },
                   ),
                   Container(
@@ -295,24 +299,24 @@ class _HomepageState extends State<Homepage>{
                   //     // color: Colors.white,
                   // ),
                   // ),
-                  const ListTile(
-                    visualDensity: VisualDensity(vertical: 1),
-                    title: Text(
-                      "Certification",
-                      style: TextStyle(
-                          fontSize: 16,
-                          // color: Colors.white,
-                          fontFamily: "Times"
-                      ),
-                    ),
-                  ),
+                  // const ListTile(
+                  //   visualDensity: VisualDensity(vertical: 1),
+                  //   title: Text(
+                  //     "Certification",
+                  //     style: TextStyle(
+                  //         fontSize: 16,
+                  //         // color: Colors.white,
+                  //         fontFamily: "Times"
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     height: 1,
                     padding: const EdgeInsets.only(right: 10,left: 10),
                     child: const Divider(
                       thickness: 1,
                       // color: Colors.white,
-                  ),
+                    ),
                   ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: 1),
@@ -335,7 +339,7 @@ class _HomepageState extends State<Homepage>{
                     child: const Divider(
                       thickness: 1,
                       // color: Colors.white,
-                  ),
+                    ),
                   ),
                   ListTile(
                     visualDensity: const VisualDensity(vertical: 1),
@@ -358,42 +362,42 @@ class _HomepageState extends State<Homepage>{
             ),
           ),
           const SizedBox(height: 10,),
-          Container(
-            padding: const EdgeInsets.all(3),
-            child: ListTile(
-              visualDensity: const VisualDensity(vertical: 1),
-              // tileColor: const Color(0xff1b424e),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              title: const Text(
-                "Dark mode",
-                style: TextStyle(
-                    fontSize: 16,
-                    // color: Colors.white,
-                    fontFamily: "Times"
-                ),
-              ),
-              contentPadding: const EdgeInsets.only(right: 5,left: 10),
-              trailing: Transform.scale(
-                scale: 0.8,
-                child: Switch(
-                  value: on,
-                  onChanged: (bool value){
-                    // if(value = true){
-                    //   _themeMode = ThemeMode.dark;
-                    // }else{
-                    //   _themeMode = ThemeMode.light;
-                    // }
-
-                    on = value;
-                    setState(() {
-
-
-                    });
-                  },
-                ),
-              )
-            ),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.all(3),
+          //   child: ListTile(
+          //     visualDensity: const VisualDensity(vertical: 1),
+          //     // tileColor: const Color(0xff1b424e),
+          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          //     title: const Text(
+          //       "Dark mode",
+          //       style: TextStyle(
+          //           fontSize: 16,
+          //           // color: Colors.white,
+          //           fontFamily: "Times"
+          //       ),
+          //     ),
+          //     contentPadding: const EdgeInsets.only(right: 5,left: 10),
+          //     trailing: Transform.scale(
+          //       scale: 0.8,
+          //       child: Switch(
+          //         value: on,
+          //         onChanged: (bool value){
+          //           // if(value = true){
+          //           //   _themeMode = ThemeMode.dark;
+          //           // }else{
+          //           //   _themeMode = ThemeMode.light;
+          //           // }
+          //
+          //           on = value;
+          //           setState(() {
+          //
+          //
+          //           });
+          //         },
+          //       ),
+          //     )
+          //   ),
+          // ),
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
@@ -526,6 +530,24 @@ class _HomepageState extends State<Homepage>{
       ),
     );
 
+    final notification = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 10),
+          child: const Text(
+            "Notifications",
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: "Times"
+            ),
+          ),
+        ),
+        bellIcon
+      ],
+    );
+
     final window = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -548,7 +570,7 @@ class _HomepageState extends State<Homepage>{
                 indicatorRadius: 4,
                 indicatorColor: const Color(0xff1b424e),
                 indicatorBackgroundColor: Colors.white,
-                isLoop: true,
+                isLoop: FirebaseBackend.cropWidget.length > 1,
                 children: FirebaseBackend.cropWidget,
               )
             ],
@@ -556,15 +578,33 @@ class _HomepageState extends State<Homepage>{
         ),
         weatherCard,
         Container(
-          padding: const EdgeInsets.only(left: 10,top: 20),
-          child: const Text(
-            "Notifications",
-            style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontFamily: "Times"
-            ),
+          padding: const EdgeInsets.all(0),
+          height: 50,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 10),
+                child: const Text(
+                  "Notifications",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: "Times"
+                  ),
+                ),
+              ),
+              bellIcon
+            ],
           ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: FirebaseBackend.notificationWidgets,
+            ),
+          )
         )
       ],
 
@@ -577,12 +617,7 @@ class _HomepageState extends State<Homepage>{
         child: menu,
       ),
       appBar: appBar,
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        // color: const Color(0xff1b424e),
-        child: window,
-      ),
+      body: window
     );
   }
 }

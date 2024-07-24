@@ -96,7 +96,7 @@ class Support extends StatelessWidget {
                             ),
                             onPressed: (){},
                             child: const Image(
-                              image: AssetImage("images/instagram.png"),
+                              image: AssetImage("images/whatsapp.png"),
                               height: 30,
                               width: 30,
                             )

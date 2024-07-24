@@ -243,9 +243,11 @@ class Crop{
       "fertilizerType" : fertilizerType,
       "fertilizerAmount" : fertilizerAmount,
       "fertilizerApplicationFrequency" : fertilizerFrequency,
+      "fertilizerApplicationDates" : fertilizerApplicationDates,
       "herbicideType" : herbicideType,
       "herbicideAmount" : herbicideAmount,
-      "herbicideApplicationFrequency" : herbicideFrequency
+      "herbicideApplicationFrequency" : herbicideFrequency,
+      "herbicideApplicationDates" : herbicideApplicationDates
     };
   }
 
@@ -285,4 +287,11 @@ class Crop{
     final file = File("${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/$cropName-$plantingDate.pdf");
     await file.writeAsBytes(await pdf.save());
   }
+}
+
+class Notify{
+  final String cropName;
+  final String activity;
+  final String date;
+  const Notify({required this.cropName,required this.activity,required this.date});
 }

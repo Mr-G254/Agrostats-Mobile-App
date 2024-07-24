@@ -82,7 +82,7 @@ class _AddCropState extends State<AddCrop>{
     List<String> dates = [];
 
     DateTime current = DateTime.now();
-    while(current.isBefore(DateTime.now().add(Duration(days: totalDuration*7)))){
+    while(current.isBefore(DateTime.now().add(Duration(days: (totalDuration-1)*7)))){
       current = current.add(Duration(days: weekInterval*7));
       dates.add(DateFormat('dd-MM-yyyy').format(current).toString());
     }
@@ -96,7 +96,7 @@ class _AddCropState extends State<AddCrop>{
     });
 
     if(cropName.text.isNotEmpty && plantingDate.text.isNotEmpty && duration.text.isNotEmpty && land.text.isNotEmpty && fertilizerType.text.isNotEmpty && fertilizerAmount.text.isNotEmpty && fertilizerApplicationFrequency.text.isNotEmpty && herbicideType.text.isNotEmpty && herbicideAmount.text.isNotEmpty && herbicideApplicationFrequency.text.isNotEmpty){
-      final crop = Crop(cropName: cropName.text, plantingDate: plantingDate.text, duration: duration.text, landOccupied: land.text, fertilizerAmount: fertilizerAmount.text, fertilizerType: fertilizerType.text, fertilizerFrequency: fertilizerApplicationFrequency.text, herbicideAmount: herbicideAmount.text, herbicideType: herbicideType.text, herbicideFrequency: herbicideApplicationFrequency.text,herbicideApplicationDates: generateDates(herbicideApplicationFrequency.text as int, duration.text as int),fertilizerApplicationDates: generateDates(fertilizerApplicationFrequency.text as int, duration.text as int));
+      final crop = Crop(cropName: cropName.text, plantingDate: plantingDate.text, duration: duration.text, landOccupied: land.text, fertilizerAmount: fertilizerAmount.text, fertilizerType: fertilizerType.text, fertilizerFrequency: fertilizerApplicationFrequency.text, herbicideAmount: herbicideAmount.text, herbicideType: herbicideType.text, herbicideFrequency: herbicideApplicationFrequency.text,herbicideApplicationDates: generateDates(int.parse(herbicideApplicationFrequency.text),int.parse(duration.text)),fertilizerApplicationDates: generateDates(int.parse(fertilizerApplicationFrequency.text),int.parse(duration.text)));
       FirebaseBackend.addCrop(crop, (){
         setState(() {
           loading = false;
@@ -263,7 +263,7 @@ class _AddCropState extends State<AddCrop>{
               child: Input(label: "TYPE", editor: fertilizerType, type: TextInputType.text,action: TextInputAction.next,enabled: widget.crop==null,),
             ),
             Expanded(
-              child: Input(label: "AMOUNT(g)", editor: fertilizerAmount, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
+              child: Input(label: "AMOUNT(kg)", editor: fertilizerAmount, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
             )
 
           ],
@@ -276,12 +276,12 @@ class _AddCropState extends State<AddCrop>{
               child: Input(label: "TYPE", editor: herbicideType, type: TextInputType.text,action: TextInputAction.next,enabled: widget.crop==null,),
             ),
             Expanded(
-              child: Input(label: "AMOUNT(g)", editor: herbicideAmount, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
+              child: Input(label: "AMOUNT(kg)", editor: herbicideAmount, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
             )
 
           ],
         ),
-        Input(label: "FREQUENCY (days per week)", editor: herbicideApplicationFrequency, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
+        Input(label: "FREQUENCY (weeks)", editor: herbicideApplicationFrequency, type: TextInputType.number,action: TextInputAction.next,enabled: widget.crop==null,),
         button
         // widget.crop == null ? button : const SizedBox(height: 10,),
       ],

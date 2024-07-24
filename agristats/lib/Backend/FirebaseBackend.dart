@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'firebase_options.dart';
 
 abstract class FirebaseBackend{
@@ -22,6 +23,8 @@ abstract class FirebaseBackend{
   static List<Crop> crop = [];
   static List<Widget> cropWidget = [];
   static List<Widget> cropCards = [];
+
+  static List<NotificationTile> notificationWidgets = [];
 
   static Future<void> initialize()async{
     await Firebase.initializeApp(
@@ -246,15 +249,48 @@ abstract class FirebaseBackend{
     crop.clear();
     cropWidget.clear();
     cropCards.clear();
+    notificationWidgets.clear();
 
     final userDb = FirebaseFirestore.instance.collection(FirebaseAuth.instance.currentUser!.uid).doc("Crop Details").collection("Crops");
     final snapshot = await userDb.get();
 
     for(final data in snapshot.docs){
-      final cropData = Crop(cropName: data['name'], plantingDate: data['plantingDate'], duration: data['duration'], landOccupied: data['landOccupied'], fertilizerAmount: data['fertilizerAmount'], fertilizerType: data['fertilizerType'], fertilizerFrequency: data['fertilizerApplicationFrequency'], herbicideAmount: data['herbicideAmount'], herbicideType: data['herbicideType'], herbicideFrequency: data['herbicideApplicationFrequency'],fertilizerApplicationDates: data['fertilizerApplicationDates'],herbicideApplicationDates: data['herbicideApplicationDates']);
+      final fertDates = List<String>.from(data['fertilizerApplicationDates']);
+      final herbDates = List<String>.from(data['herbicideApplicationDates']);
+
+      final cropData = Crop(cropName: data['name'], plantingDate: data['plantingDate'], duration: data['duration'], landOccupied: data['landOccupied'], fertilizerAmount: data['fertilizerAmount'], fertilizerType: data['fertilizerType'], fertilizerFrequency: data['fertilizerApplicationFrequency'], herbicideAmount: data['herbicideAmount'], herbicideType: data['herbicideType'], herbicideFrequency: data['herbicideApplicationFrequency'],fertilizerApplicationDates: fertDates,herbicideApplicationDates: herbDates);
       crop.add(cropData);
       cropWidget.add(CropCard(crop: cropData));
       cropCards.add(CropTile(crop: cropData));
+
+      for(final i in fertDates){
+        // final date = ;
+        if(DateFormat('dd-MM-yyyy').parse(i).isAfter(DateTime.now())){
+          if(DateFormat('dd-MM-yyyy').parse(i).isAtSameMomentAs(DateTime.now())){
+            notificationWidgets.insert(0,NotificationTile(notification: Notify(cropName: data['name'], activity: "Fertilizer", date: i)));
+          }else{
+            notificationWidgets.add(NotificationTile(notification: Notify(cropName: data['name'], activity: "Fertilizer", date: i)));
+          }
+
+          break;
+        }
+      }
+
+      for(final i in herbDates){
+        if(DateFormat('dd-MM-yyyy').parse(i).isAfter(DateTime.now())){
+          if(DateFormat('dd-MM-yyyy').parse(i).isAtSameMomentAs(DateTime.now())){
+            notificationWidgets.insert(0,NotificationTile(notification: Notify(cropName: data['name'], activity: "Herbicides", date: i)));
+          }else{
+            notificationWidgets.add(NotificationTile(notification: Notify(cropName: data['name'], activity: "Herbicides", date: i)));
+          }
+
+          break;
+        }
+      }
+    }
+
+    if(cropWidget.isEmpty){
+      cropWidget.add(const AddCropCard());
     }
 
   }

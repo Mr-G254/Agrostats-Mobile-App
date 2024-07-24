@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:agristats/Backend/App.dart';
 import 'package:agristats/Frontend/AddCrop.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -379,7 +380,7 @@ class CropCard extends StatelessWidget{
                                       width: 60,
                                       padding: const EdgeInsets.only(right: 10,bottom: 5),
                                       child: Text(
-                                        '${crop.fertilizerAmount}g',
+                                        '${crop.fertilizerAmount}kg',
                                         textAlign: TextAlign.start,
                                         style: const TextStyle(
                                             fontSize: 13,
@@ -567,6 +568,65 @@ class CropCard extends StatelessWidget{
 
 }
 
+class AddCropCard extends StatelessWidget{
+  const AddCropCard({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    final card = Container(
+      // padding: const EdgeInsets.all(10),
+      child: Card(
+        elevation: 10,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: const Image(
+          image: AssetImage("images/multicrops.png"),
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.fill,
+        ),
+      )
+    );
+
+    final text = Container(
+      padding: const EdgeInsets.all(10),
+      width: double.infinity,
+      height: double.infinity,
+      alignment: Alignment.topLeft,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+          child: Container(
+            padding: const EdgeInsets.all(4),
+            child: const Text(
+              "ADD A CROP TO INITIATE THE DASHBOARD",
+              style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Times"
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return GestureDetector(
+      child: Stack(
+        children: [
+          card,
+          text
+        ],
+      ),
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const AddCrop()));
+      },
+    );
+  }
+}
+
 class CropTile extends StatelessWidget{
   final Crop crop;
   const CropTile({super.key,required this.crop});
@@ -619,5 +679,112 @@ class CropTile extends StatelessWidget{
     return GestureDetector(
       child: card,
     );
+  }
+}
+
+class NotificationTile extends StatelessWidget{
+  final Notify notification;
+  const NotificationTile({super.key,required this.notification});
+
+  @override
+  Widget build(BuildContext context){
+    
+    final button = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xff255A6B),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      ),
+      onPressed: (){
+        
+      }, 
+      child: const Text(
+        "Done",
+        style: TextStyle(
+          fontFamily: "Times",
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: Colors.white
+        ),
+      )
+    );
+
+    final card = Container(
+        padding: const EdgeInsets.only(right: 5,left: 5),
+        child: AspectRatio(
+          aspectRatio: 4.1,
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: const Color(0xff98B9AF),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  child: AspectRatio(
+                    aspectRatio: 1.1,
+                    child: ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          color: const Color(0xff6B8D01),
+                          child: const Image(image: AssetImage("images/herbicide.png"),),
+                        )
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(right: 5,left: 5),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: const Color(0xff6B8D01)),
+                      child: Text(
+                        notification.cropName,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Times",
+                            fontSize: 16
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 160,
+                          padding: const EdgeInsets.only(right: 5,left: 5),
+                          child: Text(
+                            "Apply ${notification.activity} to crops",
+                            softWrap: true,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Times",
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5,),
+                  ],
+                ),
+                const Expanded(child: SizedBox(width: 0,)),
+                Container(
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.all(5),
+                  child: SizedBox(
+                    width: 100,
+                    height: 35,
+                    child: button,
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+    );
+
+    return card;
   }
 }

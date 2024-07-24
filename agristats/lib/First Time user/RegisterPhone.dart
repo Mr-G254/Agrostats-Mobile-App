@@ -56,9 +56,9 @@ class _RegisterPhoneState extends State<RegisterPhone>{
 
   startRegistrationProcess()async{
     if(name.text.isNotEmpty && phone.text.isNotEmpty){
-      if(completePhoneNumber.startsWith("+254")){
-        completePhoneNumber = completePhoneNumber.substring(0,4) + completePhoneNumber.substring(5,completePhoneNumber.length);
-      }
+      // if(completePhoneNumber.startsWith("+254")){
+      //   completePhoneNumber = completePhoneNumber.substring(0,4) + completePhoneNumber.substring(5,completePhoneNumber.length);
+      // }
 
       setState(() {
         visible = false;

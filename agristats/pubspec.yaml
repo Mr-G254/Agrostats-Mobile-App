@@ -101,7 +101,9 @@ flutter:
     - images/farmbg.jpg
     - images/sun.png
     - images/instagram.png
-
+    - images/watering.png
+    - images/herbicide.png
+    - images/whatsapp.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:
