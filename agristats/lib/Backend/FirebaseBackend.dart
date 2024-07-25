@@ -25,6 +25,7 @@ abstract class FirebaseBackend{
   static List<Widget> cropCards = [];
 
   static List<NotificationTile> notificationWidgets = [];
+  static Function? notifyCallback;
 
   static Future<void> initialize()async{
     await Firebase.initializeApp(
@@ -263,10 +264,11 @@ abstract class FirebaseBackend{
       cropWidget.add(CropCard(crop: cropData));
       cropCards.add(CropTile(crop: cropData));
 
+      final now  = DateTime.now();
       for(final i in fertDates){
-        // final date = ;
-        if(DateFormat('dd-MM-yyyy').parse(i).isAfter(DateTime.now())){
-          if(DateFormat('dd-MM-yyyy').parse(i).isAtSameMomentAs(DateTime.now())){
+
+        if(DateFormat('dd-MM-yyyy').parse(i).isAfter(DateTime.now().subtract(const Duration(days: 1)))){
+          if(DateFormat('dd-MM-yyyy').parse(i).isAtSameMomentAs(DateTime(now.year,now.month,now.day))){
             notificationWidgets.insert(0,NotificationTile(notification: Notify(cropName: data['name'], activity: "Fertilizer", date: i)));
           }else{
             notificationWidgets.add(NotificationTile(notification: Notify(cropName: data['name'], activity: "Fertilizer", date: i)));
@@ -277,8 +279,8 @@ abstract class FirebaseBackend{
       }
 
       for(final i in herbDates){
-        if(DateFormat('dd-MM-yyyy').parse(i).isAfter(DateTime.now())){
-          if(DateFormat('dd-MM-yyyy').parse(i).isAtSameMomentAs(DateTime.now())){
+        if(DateFormat('dd-MM-yyyy').parse(i).isAfter(DateTime.now().subtract(const Duration(days: 1)))){
+          if(DateFormat('dd-MM-yyyy').parse(i).isAtSameMomentAs(DateTime(now.year,now.month,now.day))){
             notificationWidgets.insert(0,NotificationTile(notification: Notify(cropName: data['name'], activity: "Herbicides", date: i)));
           }else{
             notificationWidgets.add(NotificationTile(notification: Notify(cropName: data['name'], activity: "Herbicides", date: i)));

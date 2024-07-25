@@ -32,6 +32,13 @@ class _HomepageState extends State<Homepage>{
   bool on = true;
   ThemeMode _themeMode = ThemeMode.system;
 
+  void updateNotification(){
+    setState(() {
+
+    });
+  }
+
+
   void showErrorObj(Object){
     showDialog(context: context, builder: (context) => DialogEr(infoType: "Error", info: Object.toString()));
   }
@@ -65,44 +72,12 @@ class _HomepageState extends State<Homepage>{
       setName();
     }
 
+
   }
 
   void goToLoginPage(){
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Login()), (route) => false);
   }
-
-  var bellIcon = Container(
-    width: 55,
-    height: 55,
-    padding: const EdgeInsets.all(10),
-    child: Stack(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          child: const Image(
-            image: AssetImage("images/notify.png"),
-            width: 20,
-            height: 20,
-          ),
-        ),
-        Container(
-          alignment: Alignment.topRight,
-          child: CircleAvatar(
-            radius: 8,
-            backgroundColor: const Color(0xff6B8D01),
-            child: Text(
-              FirebaseBackend.notificationWidgets.length.toString(),
-              style: const TextStyle(
-                  fontSize: 10,
-                  // color: Colors.white,
-                  fontFamily: "Times"
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 
   final userProfile = Image(image: NetworkImage(FirebaseBackend.profilePhotoUrl),height: 30,width: 30,fit: BoxFit.cover,);
   final noprofile = Container(
@@ -114,6 +89,7 @@ class _HomepageState extends State<Homepage>{
         image: AssetImage("images/user2.png"),
       )
   );
+
 
   @override
   Widget build(BuildContext context){
@@ -362,42 +338,6 @@ class _HomepageState extends State<Homepage>{
             ),
           ),
           const SizedBox(height: 10,),
-          // Container(
-          //   padding: const EdgeInsets.all(3),
-          //   child: ListTile(
-          //     visualDensity: const VisualDensity(vertical: 1),
-          //     // tileColor: const Color(0xff1b424e),
-          //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          //     title: const Text(
-          //       "Dark mode",
-          //       style: TextStyle(
-          //           fontSize: 16,
-          //           // color: Colors.white,
-          //           fontFamily: "Times"
-          //       ),
-          //     ),
-          //     contentPadding: const EdgeInsets.only(right: 5,left: 10),
-          //     trailing: Transform.scale(
-          //       scale: 0.8,
-          //       child: Switch(
-          //         value: on,
-          //         onChanged: (bool value){
-          //           // if(value = true){
-          //           //   _themeMode = ThemeMode.dark;
-          //           // }else{
-          //           //   _themeMode = ThemeMode.light;
-          //           // }
-          //
-          //           on = value;
-          //           setState(() {
-          //
-          //
-          //           });
-          //         },
-          //       ),
-          //     )
-          //   ),
-          // ),
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
@@ -440,7 +380,6 @@ class _HomepageState extends State<Homepage>{
           gradient: const LinearGradient(
             colors: [
               Color(0xffadd9a6),
-              // Color(0xff1b424e),
               Color(0xff255A6B),
             ],
             begin: Alignment.topCenter,
@@ -530,24 +469,6 @@ class _HomepageState extends State<Homepage>{
       ),
     );
 
-    final notification = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.only(left: 10),
-          child: const Text(
-            "Notifications",
-            style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontFamily: "Times"
-            ),
-          ),
-        ),
-        bellIcon
-      ],
-    );
-
     final window = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -594,7 +515,39 @@ class _HomepageState extends State<Homepage>{
                   ),
                 ),
               ),
-              bellIcon
+              // bellIcon
+              Container(
+                width: 55,
+                height: 55,
+                padding: const EdgeInsets.all(10),
+                child: Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: const Image(
+                        image: AssetImage("images/notify.png"),
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: CircleAvatar(
+                        radius: 8,
+                        backgroundColor: const Color(0xff6B8D01),
+                        child: Text(
+                          FirebaseBackend.notificationWidgets.length.toString(),
+                          style: const TextStyle(
+                              fontSize: 10,
+                              // color: Colors.white,
+                              fontFamily: "Times"
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -609,6 +562,8 @@ class _HomepageState extends State<Homepage>{
       ],
 
     );
+
+    FirebaseBackend.notifyCallback = updateNotification;
 
     return Scaffold(
       drawer: Drawer(

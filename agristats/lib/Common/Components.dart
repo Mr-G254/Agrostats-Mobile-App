@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:agristats/Backend/App.dart';
+import 'package:agristats/Backend/FirebaseBackend.dart';
 import 'package:agristats/Frontend/AddCrop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -688,15 +689,17 @@ class NotificationTile extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    
+    final now  = DateTime.now();
+
     final button = ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xff255A6B),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       onPressed: (){
-        
-      }, 
+        FirebaseBackend.notificationWidgets.remove(this);
+        FirebaseBackend.notifyCallback!();
+      },
       child: const Text(
         "Done",
         style: TextStyle(
@@ -706,6 +709,16 @@ class NotificationTile extends StatelessWidget{
           color: Colors.white
         ),
       )
+    );
+
+    final date = Text(
+      notification.date,
+      style: const TextStyle(
+          fontFamily: "Times",
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: Colors.white
+      ),
     );
 
     final card = Container(
@@ -776,7 +789,7 @@ class NotificationTile extends StatelessWidget{
                   child: SizedBox(
                     width: 100,
                     height: 35,
-                    child: button,
+                    child: DateFormat('dd-MM-yyyy').parse(notification.date).isAtSameMomentAs(DateTime(now.year,now.month,now.day)) ? button : date,
                   ),
                 )
               ],

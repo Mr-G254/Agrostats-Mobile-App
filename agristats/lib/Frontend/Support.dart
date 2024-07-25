@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Support extends StatelessWidget {
   @override
@@ -68,7 +69,16 @@ class Support extends StatelessWidget {
                                 backgroundColor: const Color(0xff255A6B),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))
                             ),
-                            onPressed: (){},
+                            onPressed: ()async{
+                              final Uri params = Uri(
+                                scheme: 'mailto',
+                                path: 'agrostatsltd@gmail.com'
+                              );
+
+                              if (await canLaunch(params.toString())) {
+                              await launch(params.toString());
+                              }
+                            },
                             child: const Icon(
                               Icons.email,
                               size: 30,
@@ -94,7 +104,13 @@ class Support extends StatelessWidget {
                                 backgroundColor: const Color(0xff255A6B),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))
                             ),
-                            onPressed: (){},
+                            onPressed: ()async{
+                              const url = 'https://wa.me/+254 113368525';
+
+                              if (await canLaunch(url)) {
+                              await launch(url);
+                              }
+                            },
                             child: const Image(
                               image: AssetImage("images/whatsapp.png"),
                               height: 30,
