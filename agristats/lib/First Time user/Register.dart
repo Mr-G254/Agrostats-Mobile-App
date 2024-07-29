@@ -66,7 +66,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin{
                       dividerColor: Colors.white60,
                       tabs: [
                         Tab(child: Text("Email",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),
-                        Tab(child: Text("Phone",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),
+                        // Tab(child: Text("Phone",style: TextStyle(fontFamily: "Times",fontSize: 15,color: Colors.white),),),
                       ],
                       indicatorColor: Colors.white,
                       labelColor: Color(0xff1b424e),
@@ -96,7 +96,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin{
                     child: TabBarView(
                       children: [
                         RegisterEmail(),
-                        RegisterPhone()
+                        // RegisterPhone()
                       ]
                     ),
                   )

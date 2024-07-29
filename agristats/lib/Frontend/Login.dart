@@ -189,70 +189,70 @@ class _LoginState extends State<Login> {
             child: loginLoading? loadingAnimation : loginText
           ),
         ),
-        Container(
-          padding: const EdgeInsets.only(right: 30,left: 30,top: 10,bottom: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Expanded(child: Divider(thickness: 1,height: 40,color: Colors.white,)),
-              Container(
-                padding: const EdgeInsets.only(right: 15,left: 15),
-                child: const Text(
-                  "Or",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontFamily: "Times"
-                  ),
-                ),
-              ),
-              const Expanded(child: Divider(thickness: 1,height: 40,color: Colors.white,))
-            ],
-          ),
-        ),
-        PhoneInput(label: "PHONE NUMBER",
-          editor: phonenumber,
-          type: TextInputType.phone,
-          action: TextInputAction.done,
-          phoneNumber: completePhoneNumber,
-          callback: getnumber,
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 10,bottom: 15,right: 80,left: 80),
-          width: double.infinity,
-          height: 75,
-          child: ElevatedButton(
-            onPressed: (){
-              loginWithPhone();
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 10,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-              backgroundColor: const Color(0xff374804),
-            ),
-            child: phoneLoading? loadingAnimation : phoneText
-          ),
-        ),
-        GestureDetector(
-          onTap: () =>
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Register())
-              ),
-          child: Container(
-            padding: const EdgeInsets.only(bottom: 10),
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: const Text(
-              "Don't have an account? Register",
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                  fontFamily: "Times"
-              ),
-            ),
-          ),
-        )
+      //   Container(
+      //     padding: const EdgeInsets.only(right: 30,left: 30,top: 10,bottom: 10),
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         const Expanded(child: Divider(thickness: 1,height: 40,color: Colors.white,)),
+      //         Container(
+      //           padding: const EdgeInsets.only(right: 15,left: 15),
+      //           child: const Text(
+      //             "Or",
+      //             style: TextStyle(
+      //               fontSize: 20,
+      //               color: Colors.white,
+      //               fontFamily: "Times"
+      //             ),
+      //           ),
+      //         ),
+      //         const Expanded(child: Divider(thickness: 1,height: 40,color: Colors.white,))
+      //       ],
+      //     ),
+      //   ),
+      //   PhoneInput(label: "PHONE NUMBER",
+      //     editor: phonenumber,
+      //     type: TextInputType.phone,
+      //     action: TextInputAction.done,
+      //     phoneNumber: completePhoneNumber,
+      //     callback: getnumber,
+      //   ),
+      //   Container(
+      //     padding: const EdgeInsets.only(top: 10,bottom: 15,right: 80,left: 80),
+      //     width: double.infinity,
+      //     height: 75,
+      //     child: ElevatedButton(
+      //       onPressed: (){
+      //         loginWithPhone();
+      //       },
+      //       style: ElevatedButton.styleFrom(
+      //         elevation: 10,
+      //         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      //         backgroundColor: const Color(0xff374804),
+      //       ),
+      //       child: phoneLoading? loadingAnimation : phoneText
+      //     ),
+      //   ),
+      //   GestureDetector(
+      //     onTap: () =>
+      //         Navigator.pushReplacement(
+      //             context,
+      //             MaterialPageRoute(builder: (context) => const Register())
+      //         ),
+      //     child: Container(
+      //       padding: const EdgeInsets.only(bottom: 10),
+      //       width: double.infinity,
+      //       alignment: Alignment.center,
+      //       child: const Text(
+      //         "Don't have an account? Register",
+      //         style: TextStyle(
+      //             fontSize: 12,
+      //             color: Colors.white,
+      //             fontFamily: "Times"
+      //         ),
+      //       ),
+      //     ),
+      //   )
       ],
 
     );
