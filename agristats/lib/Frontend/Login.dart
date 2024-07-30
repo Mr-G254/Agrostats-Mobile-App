@@ -233,49 +233,49 @@ class _LoginState extends State<Login> {
       //       child: phoneLoading? loadingAnimation : phoneText
       //     ),
       //   ),
-      //   GestureDetector(
-      //     onTap: () =>
-      //         Navigator.pushReplacement(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => const Register())
-      //         ),
-      //     child: Container(
-      //       padding: const EdgeInsets.only(bottom: 10),
-      //       width: double.infinity,
-      //       alignment: Alignment.center,
-      //       child: const Text(
-      //         "Don't have an account? Register",
-      //         style: TextStyle(
-      //             fontSize: 12,
-      //             color: Colors.white,
-      //             fontFamily: "Times"
-      //         ),
-      //       ),
-      //     ),
-      //   )
+        GestureDetector(
+          onTap: () =>
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Register())
+              ),
+          child: Container(
+            padding: const EdgeInsets.only(bottom: 10),
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: const Text(
+              "Don't have an account? Register",
+              style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontFamily: "Times"
+              ),
+            ),
+          ),
+        )
       ],
 
     );
 
     final window = Container(
-        padding: const EdgeInsets.all(0),
-        child: Card(
-          color: Colors.transparent,
-          elevation: 10,
-          child: FractionallySizedBox(
-            widthFactor: 0.9,
-            heightFactor: 0.8,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                child: SingleChildScrollView(
-                  child: column,
-                ),
+      padding: const EdgeInsets.all(0),
+      child: Card(
+        color: Colors.transparent,
+        elevation: 10,
+        child: FractionallySizedBox(
+          widthFactor: 0.9,
+          heightFactor: 0.6,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: SingleChildScrollView(
+                child: column,
               ),
             ),
           ),
-        )
+        ),
+      )
     );
 
 
